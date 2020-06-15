@@ -60,14 +60,21 @@ class BinaryTreeNode
 
         else
         {
-            //tr -> Maxkey -> data = 0;
-            cout << "This tree is NULL" << endl;
+            tr -> Maxkey -> data = 0;
         }
     }
 
     static int Returnmaxkey(BinaryTreeNode *tr)
     {
-        return tr -> Maxkey -> data;
+        if (tr)
+        {
+            return tr -> Maxkey -> data;
+        }
+
+        else
+        {
+            cout << "The tree is NULL" << endl;
+        }
     }
 
     private:
