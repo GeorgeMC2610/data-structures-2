@@ -57,11 +57,6 @@ class BinaryTreeNode
 
         tr -> Maxkey = pp;
         }
-
-        else
-        {
-            tr -> Maxkey -> data = 0;
-        }
     }
 
     static int Returnmaxkey(BinaryTreeNode *tr)
