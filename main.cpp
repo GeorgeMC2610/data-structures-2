@@ -75,7 +75,7 @@ class BinaryTreeNode
     private:
 
         int data;
-        BinaryTreeNode *Maxkey, *LeftChild,*RightChild; //pointer to max element, left subtree and right subtree
+        BinaryTreeNode *Maxkey, *LeftChild, *RightChild; //pointer to max element, left subtree and right subtree
 
 };
 
