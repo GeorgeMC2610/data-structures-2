@@ -1,76 +1,80 @@
-/******************************************************************************
-
-                              Online C++ Compiler.
-               Code, Compile, Run and Debug C++ program online.
-Write your code in this editor and press "Run" button to compile and execute it.
-
-*******************************************************************************/
-
 #include <iostream>
-
 using namespace std;
 
-class BinaryTreeNode { ///////////////////////FOR TREE
-    
-public:
-
-BinaryTreeNode() {LeftChild = RightChild = 0;}
-
-BinaryTreeNode(const int& e)
-{data = e; LeftChild = RightChild = 0;}
-
-BinaryTreeNode(const int& e, BinaryTreeNode *l,
-BinaryTreeNode *r)
-{data = e; LeftChild = l; RightChild = r;}
-
-
-////////////////////////////////////////////////    METHODS
-
-static void Preorder_Output(BinaryTreeNode *r){
-    if(r){
-        cout<<r->data<<" ";
-        Preorder_Output(r->LeftChild);
-        Preorder_Output(r->RightChild);
-    }
-}
-
-static void Findmaxkey(BinaryTreeNode *tr){  //Find max key element of tree
-    if(tr){
-    BinaryTreeNode *p = tr;
-    int maxkey = p->data;
-    BinaryTreeNode *pp = p;
-    p = p->RightChild;
-    
-    while(p){
-        pp = p;
-        if (p->data > maxkey){
-            maxkey = p->data;
+class BinaryTreeNode        
+{ 
+    ///////////////////////FOR TREE
+    public:
+        BinaryTreeNode()
+        {
+            LeftChild = RightChild = 0;
         }
-        p = p->RightChild;
-    }
-    tr->Maxkey = pp;
-    }
-    else{
-        tr->Maxkey->data = 0;
-    }
-}
 
-static int Returnmaxkey(BinaryTreeNode *tr){
-    return tr->Maxkey->data;
-}
+        BinaryTreeNode(const int& e)
+        {
+            data = e;
+            LeftChild = RightChild = 0;
+        }
 
-private:
+        BinaryTreeNode(const int& e, BinaryTreeNode *l, BinaryTreeNode *r)
+        {
+            data = e;
+            LeftChild = l;
+            RightChild = r;
+        }
 
-int data;
-BinaryTreeNode *Maxkey, *LeftChild,*RightChild; //pointer to max element, left subtree and right subtree
+
+    ////////////////////////////////////////////////METHODS
+
+    static void Preorder_Output(BinaryTreeNode *r){
+        if(r)
+        {
+            cout << r -> data << " ";
+            Preorder_Output(r -> LeftChild);
+            Preorder_Output(r -> RightChild);
+        }
+    }
+
+    static void Findmaxkey(BinaryTreeNode *tr)
+    {  
+        //Find max key element of tree
+        if (tr)
+        {
+            BinaryTreeNode *p = tr;
+            int maxkey = p -> data;
+            BinaryTreeNode *pp = p;
+            p = p -> RightChild;
+        
+            while(p)
+            {
+                pp = p;
+                if (p -> data > maxkey)
+                {
+                    maxkey = p -> data;
+                }
+                p = p -> RightChild;
+            }
+
+        tr -> Maxkey = pp;
+        }
+
+        else
+        {
+            tr -> Maxkey -> data = 0;
+        }
+    }
+
+    static int Returnmaxkey(BinaryTreeNode *tr)
+    {
+        return tr -> Maxkey -> data;
+    }
+
+    private:
+
+        int data;
+        BinaryTreeNode *Maxkey, *LeftChild,*RightChild; //pointer to max element, left subtree and right subtree
 
 };
-
-
-
-
-
-
 
 
 int main()
@@ -120,7 +124,5 @@ int main()
     
     BinaryTreeNode::Preorder_Output(tree);
     BinaryTreeNode::Findmaxkey(tree);
-    cout<<endl<<BinaryTreeNode::Returnmaxkey(tree);
-    
-                                
+    cout<<endl<<BinaryTreeNode::Returnmaxkey(tree);                        
 }
