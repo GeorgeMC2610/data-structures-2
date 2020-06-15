@@ -60,7 +60,8 @@ class BinaryTreeNode
 
         else
         {
-            tr -> Maxkey -> data = 0;
+            //tr -> Maxkey -> data = 0;
+            cout << "This tree is NULL" << endl;
         }
     }
 
@@ -118,7 +119,7 @@ int main()
      
     BinaryTreeNode rt50 (50,&nd41,&nd67);
     BinaryTreeNode *root = &rt50; //Pointer to root. 
-    BinaryTreeNode *tree = root;//Now root is our tree because its the node that contains the rest nodes.
+    BinaryTreeNode *tree = root;  //Now root is our tree because its the node that contains the rest nodes.
 //###################################################################################    
     
     
