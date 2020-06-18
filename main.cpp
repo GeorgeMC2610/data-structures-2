@@ -1,11 +1,10 @@
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 
 using namespace std;
 
-
-
-bool _duplicate = false;
-bool _preord = false; //GLOBAL FLAG VARIABLES FOR DUPLICATE CHECK
+int _count; //global variable to count insertions
 
 class BinaryTreeNode        
 {
@@ -103,40 +102,42 @@ class BinaryTreeNode
     
     //CHECK FOR DUPLICATE VALUES
     
-    static void Preorder_Search(BinaryTreeNode *tr,int k){
+    static bool Preorder_Search(BinaryTreeNode *tr,int k){  
         if(tr)
         {
             if (tr->data == k)
             {
-                _preord = true;
+                return true; 
             }
-            Preorder_Search(tr -> LeftChild, k);
-            Preorder_Search(tr -> RightChild, k);
+            return Preorder_Search(tr -> LeftChild, k);
+            return Preorder_Search(tr -> RightChild, k);
         }
+        
+		return false;	
+        	 
     }
     
-    static void Searchsamekey(BinaryTreeNode *tr, int k){
+    static bool Searchsamekey(BinaryTreeNode *tr, int k){ 
         //Search if given key element already exists in tree
         if(tr)
         {   
             if (tr->data == k){
-                _duplicate = true;
+                return true; 
             }
             else if (k > tr->data)
             {
                 
-                Searchsamekey(tr->RightChild, k);
+                return Searchsamekey(tr->RightChild, k);
                 
             }
-            else {
-                    
-                Preorder_Search(tr,k);
-                if (_preord==true)
-                {
-                    _duplicate = true;
-                }
+            else if(Preorder_Search(tr,k)){
+                      
+            	return true; 
+                
             }
         }
+        
+        return false; 
     }
 
     // GET BALANCE FACTOR OF NODE nd 
@@ -193,11 +194,13 @@ class BinaryTreeNode
     static void LeftrotationII(BinaryTreeNode *a, BinaryTreeNode *pal, BinaryTreeNode *par)  
     {     
         BinaryTreeNode *b = a->RightChild;  
-        BinaryTreeNode *aL = a->LeftChild;  
+        BinaryTreeNode *aL = a->LeftChild;
+		BinaryTreeNode *c = a->RightChild->RightChild;  
   
         // Perform rotation  
         b->RightChild = aL;  
-        a->LeftChild = b; 
+        a->LeftChild = b;
+		a->RightChild = c; 
          
         if(par){
             par->RightChild = a;
@@ -209,19 +212,27 @@ class BinaryTreeNode
     static BinaryTreeNode* Insert(BinaryTreeNode *tr,int k) //INSERT FUNCTION
     {
 
-        //INSERTING A NEW KEY ON THE TREE, AT A POSITION BASED ON STANDARD BST INSERTION
-
-
-        _duplicate = false;
-        _preord = false;
+        //INSERTING A NEW KEY ON THE TREE.FOR EVERY INSERTION OF KEYS THAT ARE SMALLER THAN THEIR ROOT, THERE IS 
+		//A 50% CHANCE TO DECIDE TO PROCEED FROM THE LEFT AND A 50% CHANCE TO DECIDE TO PROCEED FROM THE RIGHT. 
+		
+		int random = (rand() % 2);
+		if(tr){
+			
+			if(random)
+		  	{
+      			cout<<"During the insertion "<<++_count<<", the key that is smaller than its root is proceeding to the right"<<endl;
+		  	}else{
+		 	 	cout<<"During the insertion "<<++_count<<", the key that is smaller than its root, is proceeding to the left"<<endl;
+		 	 }	
+			
+		}
         
-        Searchsamekey(tr,k);
-        
-        if(_duplicate==true)
-        {   
-            cout<<"Given element already exists";
+        bool b = Searchsamekey(tr,k);
+        if(b){
+        	cout<<"Given element already exists";
             return tr;
-        }
+		}
+        
         
         BinaryTreeNode *a = 0;
         BinaryTreeNode *par = 0;
@@ -252,7 +263,7 @@ class BinaryTreeNode
             }
                       
             
-            if (k>p->data)
+            if (k>p->data || (k<p->data && random == 1))
 			{  								
 				p = p->RightChild;						               
             }else
@@ -268,16 +279,17 @@ class BinaryTreeNode
         if(i==1)
         {
             BinaryTreeNode *newnode = new BinaryTreeNode (k);
-        
+        	
             if (!tr)
             {
+            	_count++;
                 tr = newnode;
                 
                 Findmaxkey(tr);
                 return tr;
             }
         
-            if(k>pp->data)
+            if(k>pp->data || (k<pp->data && random == 1))
             {
                 pp->RightChild = newnode;
             
@@ -288,16 +300,16 @@ class BinaryTreeNode
         }
         }
     
+    
         
         //REBALANCING TREE
       
-      
-      
+       
         int a_balance = Ndbalance(a); 
         
         // Left Left Case
 
-        if (a_balance > 1 && k < a->LeftChild->data)
+        if (a_balance > 1 && k < a->LeftChild->data)   
         {
         	
             Rightrotation(a,tr,pal,par);
@@ -307,9 +319,10 @@ class BinaryTreeNode
             
         }
         
-        // Right Left Case I 
+        // Right Left Case I (We need to check if the new node is in the left subtree of the right subtree of a,
+        //in order to not match this case with RRII case)
         
-        else if (a_balance < -1 && k < a->RightChild->data && a->data < k)   
+        else if (a_balance < -1 && k < a->RightChild->data && a->data < k && Preorder_Search(a->RightChild->LeftChild, k))   
         {  
              
             Rightrotation(a->RightChild,a->RightChild,0,0);
@@ -319,11 +332,10 @@ class BinaryTreeNode
 			return tr;  
         } 
         
-         // Right Left Case II 
+         // Right Left Case II  
         
-       else if (a_balance < -1 && k < a->RightChild->data && a->data > k)  
+       else if (a_balance < -1 && k < a->RightChild->data && a->data > k && Preorder_Search(a->RightChild->LeftChild, k) )      
         {  
-        
             Rightrotation(a->RightChild,a->RightChild,0,0);
             
             BinaryTreeNode *temp = a->RightChild->RightChild;
@@ -345,7 +357,7 @@ class BinaryTreeNode
         // Right Right Case I
         
         else if (a_balance < -1 && a->data < a->RightChild->data)
-        {
+        {		
              LeftrotationI(a,tr,pal,par);
 
              Findmaxkey(tr);
@@ -355,7 +367,6 @@ class BinaryTreeNode
         // Right Right Case II
         
         else if (a_balance < -1 && a->data > a->RightChild->data){
-        	
         	LeftrotationII(a,pal,par); 
         	
         	Findmaxkey(tr);
@@ -412,6 +423,7 @@ class BinaryTreeNode
 
 int main()
 { 
+	srand(time(NULL));
                         //AVL TREE CREATION
                     
                     
@@ -419,7 +431,7 @@ int main()
                         //  Left subtree of root
     
     //Leafs 
-    /*BinaryTreeNode nd27 (27), nd8 (8), nd22 (22), nd20 (20);
+   /* BinaryTreeNode nd27 (27), nd8 (8), nd22 (22), nd20 (20);
     
     //Rest nodes
     BinaryTreeNode nd10 (10,&nd8,0); 
@@ -457,16 +469,20 @@ int main()
       //Now root is our tree because its the node that contains the rest nodes.
     BinaryTreeNode *tree = root; */
 //###################################################################################
-    
-    
+
    
     BinaryTreeNode *tree = 0;
-    tree = BinaryTreeNode::Insert(tree, 25);
-    tree = BinaryTreeNode::Insert(tree, 20);
-    tree = BinaryTreeNode::Insert(tree, 19);
-     
-	
+    tree = BinaryTreeNode::Insert(tree, 80);
+    tree = BinaryTreeNode::Insert(tree, 70);
+	tree = BinaryTreeNode::Insert(tree, 86);
+	tree = BinaryTreeNode::Insert(tree, 345);
+	tree = BinaryTreeNode::Insert(tree, 72);
+	tree = BinaryTreeNode::Insert(tree, 40);
+	  	
 	BinaryTreeNode::Preorder_Output(tree);
+	cout<<endl;
+	
+
 
     cout<<endl<<BinaryTreeNode::Returnmaxkey(tree);
     
