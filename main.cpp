@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <string>
 
 using namespace std;
 
@@ -429,7 +430,7 @@ int showMenu()
     cout << "2. Show the Maximum value in the Tree" << endl;
     cout << "3. Insert a value"                     << endl;
     cout << "4. Search for a value"                 << endl;
-    cout << "5. Delete a node"                     << endl;
+    cout << "5. Delete a node"                      << endl;
     cout << "6. Exit the menu"              << endl << endl;
 
     do
@@ -444,11 +445,11 @@ int showMenu()
 int main()
 { 
 	srand(time(NULL));
-                        //AVL TREE CREATION
+    //AVL TREE CREATION
                     
                     
                     
-                        //  Left subtree of root
+    //  Left subtree of root
     
     //Leafs 
    /* BinaryTreeNode nd27 (27), nd8 (8), nd22 (22), nd20 (20);
@@ -523,6 +524,12 @@ int main()
                 break;
 
             case 4:
+                int searchKey;
+                cout << "Enter the number you want to search for: ";
+                cin >> searchKey;
+
+                cout << (BinaryTreeNode::Preorder_Search(tree, searchKey)? "This number exists in the tree" : "This number doesn't exist in the tree") << endl;
+                system("pause");
                 break;
 
             case 5:
