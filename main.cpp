@@ -33,25 +33,35 @@ class BinaryTreeNode
 
     ////////////////////////////////////////////////METHODS
 
-    static void Preorder_Output(BinaryTreeNode *tr){ //OUTPUT
+    static void Preorder_Output(BinaryTreeNode *tr)
+    {   //OUTPUT
         if(tr)
         {
             cout << tr -> data << " ";
             Preorder_Output(tr -> LeftChild);
             Preorder_Output(tr -> RightChild);
         }
-        
     } 
 
 
-    static void Postorder_Output(BinaryTreeNode *tr){ //OUTPUT
+    static void Inorder_Output(BinaryTreeNode *tr)
+    {   //OUTPUT
         if(tr)
         {
-            Preorder_Output(tr -> LeftChild);
-            Preorder_Output(tr -> RightChild);
+            Inorder_Output(tr -> LeftChild);
+            cout << tr -> data << " ";
+            Inorder_Output(tr -> RightChild);
+        }
+    }
+
+    static void Postorder_Output(BinaryTreeNode *tr)
+    {   //OUTPUT
+        if(tr)
+        {
+            Postorder_Output(tr -> LeftChild);
+            Postorder_Output(tr -> RightChild);
             cout << tr -> data << " ";
         }
-        
     }
 
     //FIND AND RETURN MAX KEY 
@@ -466,10 +476,10 @@ int main()
                     
                     
                     
-    //  Left subtree of root
+    /* //  Left subtree of root
     
     //Leafs 
-   /* BinaryTreeNode nd27 (27), nd8 (8), nd22 (22), nd20 (20);
+    BinaryTreeNode nd27 (27), nd8 (8), nd22 (22), nd20 (20);
     
     //Rest nodes
     BinaryTreeNode nd10 (10,&nd8,0); 
@@ -496,20 +506,20 @@ int main()
     BinaryTreeNode rt50 (50,&nd41,&nd67); 
     BinaryTreeNode *root = &rt50; //Pointer to root. 
     //Now root is our tree because its the node that contains the rest nodes.
-    BinaryTreeNode *tree = root; */
-    //###############################
+    BinaryTreeNode *tree = root;
+    //############################### */
 
+    BinaryTreeNode *tree = 0;
    
-   
-    // tree = BinaryTreeNode::Insert(tree, 80);
-    // tree = BinaryTreeNode::Insert(tree, 70);
-	// tree = BinaryTreeNode::Insert(tree, 86);
-	// tree = BinaryTreeNode::Insert(tree, 345);
-	// tree = BinaryTreeNode::Insert(tree, 72);
-	// tree = BinaryTreeNode::Insert(tree, 40);
+    tree = BinaryTreeNode::Insert(tree, 80);
+    tree = BinaryTreeNode::Insert(tree, 70);
+	tree = BinaryTreeNode::Insert(tree, 86);
+	tree = BinaryTreeNode::Insert(tree, 345);
+	tree = BinaryTreeNode::Insert(tree, 72);
+	tree = BinaryTreeNode::Insert(tree, 40);
 	  	
 	
-	BinaryTreeNode *tree = 0;
+	
     int menu;
     
     do {
@@ -519,6 +529,10 @@ int main()
             case 1:
                 cout << "Preorder: ";
                 BinaryTreeNode::Preorder_Output(tree);
+
+                cout << endl << "Inorder: ";
+                BinaryTreeNode::Inorder_Output(tree);
+
                 cout << endl << "Postorder: ";
                 BinaryTreeNode::Postorder_Output(tree);
                 cout << ((tree)? "" : "The tree is empty") << endl;
@@ -526,7 +540,7 @@ int main()
                 break;
             
             case 2:
-                cout << BinaryTreeNode::Returnmaxkey(tree) << endl;
+                cout << "The maximum value of the tree is: " << BinaryTreeNode::Returnmaxkey(tree) << endl;
                 system("pause");
                 break;
 
@@ -536,7 +550,6 @@ int main()
                 cin >> number;
 
                 tree = BinaryTreeNode::Insert(tree, number);
-                cout << "The number " << number << " was successfully inserted into a node!" << endl;
                 system("pause");
                 break;
 
