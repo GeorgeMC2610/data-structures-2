@@ -429,7 +429,7 @@ int showMenu()
     cout << "2. Show the Maximum value in the Tree" << endl;
     cout << "3. Insert a value"                     << endl;
     cout << "4. Search for a value"                 << endl;
-    cout << "5. Delete a node."                     << endl;
+    cout << "5. Delete a node"                     << endl;
     cout << "6. Exit the menu"              << endl << endl;
 
     do
@@ -513,6 +513,13 @@ int main()
                 break;
 
             case 3:
+                int number;
+                cout << "Enter the number you want to insert: ";
+                cin >> number;
+
+                tree = BinaryTreeNode::Insert(tree, number);
+                cout << "The number " << number << " was successfully inserted into a node!" << endl;
+                system("pause");
                 break;
 
             case 4:
