@@ -40,6 +40,11 @@ class BinaryTreeNode
             Preorder_Output(tr -> LeftChild);
             Preorder_Output(tr -> RightChild);
         }
+        else
+        {
+            cout << "The tree is NULL" << endl;
+        }
+        
     } 
 
     //FIND AND RETURN MAX KEY 
@@ -76,6 +81,7 @@ class BinaryTreeNode
         else
         {
             cout << "The tree is NULL" << endl;
+            return 0;
         }
     }
     
@@ -484,23 +490,20 @@ int main()
     //###############################
 
    
-    BinaryTreeNode *tree = 0;
-    tree = BinaryTreeNode::Insert(tree, 80);
-    tree = BinaryTreeNode::Insert(tree, 70);
-	tree = BinaryTreeNode::Insert(tree, 86);
-	tree = BinaryTreeNode::Insert(tree, 345);
-	tree = BinaryTreeNode::Insert(tree, 72);
-	tree = BinaryTreeNode::Insert(tree, 40);
+   
+    // tree = BinaryTreeNode::Insert(tree, 80);
+    // tree = BinaryTreeNode::Insert(tree, 70);
+	// tree = BinaryTreeNode::Insert(tree, 86);
+	// tree = BinaryTreeNode::Insert(tree, 345);
+	// tree = BinaryTreeNode::Insert(tree, 72);
+	// tree = BinaryTreeNode::Insert(tree, 40);
 	  	
-	BinaryTreeNode::Preorder_Output(tree);
-	cout<<endl;
 	
-
-
-    cout << endl << BinaryTreeNode::Returnmaxkey(tree) << endl;
-    int menu = showMenu();
-
+	BinaryTreeNode *tree = 0;
+    int menu;
+    
     do {
+        menu = showMenu();
         switch (menu)
         {
             case 1:
@@ -528,10 +531,7 @@ int main()
                 break;
 
         }
-
-        menu = showMenu();
     } while (menu != 5);
     
     return 0;
 }
-
