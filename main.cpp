@@ -420,6 +420,25 @@ class BinaryTreeNode
 
 };
 
+int showMenu()
+{
+    int action;
+
+    cout << "--- ACTIONS MENU ---"          << endl << endl;
+    cout << "1. Show the Tree"                      << endl;
+    cout << "2. Show the Maximum value in the Tree" << endl;
+    cout << "3. Insert a value"                     << endl;
+    cout << "4. Search for a value"                 << endl;
+    cout << "5. Delete a node."             << endl << endl;
+
+    do
+    {
+        cout << "ENTER A NUMBER FOR AN ACTION: ";
+        cin >> action;
+    } while (action > 5 || action < 1);
+
+    return action;
+}
 
 int main()
 { 
@@ -440,12 +459,7 @@ int main()
     BinaryTreeNode nd39 (39,&nd10,&nd20);
     BinaryTreeNode nd41 (41,&nd39,&nd26); 
                                             
-     
-     
-     
-     
-     
-                        //  Right subtree of root
+    //  Right subtree of root
                         
     //Leafs
     BinaryTreeNode nd43 (43), nd9 (9), nd52 (52), nd40 (40), nd90 (90), nd87 (87);
@@ -457,18 +471,14 @@ int main()
     BinaryTreeNode nd101 (101,&nd90,&nd87);  
     BinaryTreeNode nd59 (59,&nd52,&nd101);
     BinaryTreeNode nd67 (67,&nd61,&nd59); 
-    
-                        
-                        
-                        
-                        
-                                    // Root
+
+    // Root
      
     BinaryTreeNode rt50 (50,&nd41,&nd67); 
     BinaryTreeNode *root = &rt50; //Pointer to root. 
-      //Now root is our tree because its the node that contains the rest nodes.
+    //Now root is our tree because its the node that contains the rest nodes.
     BinaryTreeNode *tree = root; */
-//###################################################################################
+    //###############################
 
    
     BinaryTreeNode *tree = 0;
@@ -484,7 +494,29 @@ int main()
 	
 
 
-    cout<<endl<<BinaryTreeNode::Returnmaxkey(tree);
+    cout << endl << BinaryTreeNode::Returnmaxkey(tree) << endl;
+    int menu = showMenu();
+
+    switch (menu)
+    {
+        case 1:
+            BinaryTreeNode::Preorder_Output(tree);
+            break;
+        
+        case 2:
+            break;
+
+        case 3:
+            break;
+
+        case 4:
+            break;
+
+        case 5:
+            break;
+
+    }
     
-    
+    return 0;
 }
+
