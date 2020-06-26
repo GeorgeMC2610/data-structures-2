@@ -40,12 +40,19 @@ class BinaryTreeNode
             Preorder_Output(tr -> LeftChild);
             Preorder_Output(tr -> RightChild);
         }
-        else
-        {
-            cout << "The tree is NULL" << endl;
-        }
         
     } 
+
+
+    static void Postorder_Output(BinaryTreeNode *tr){ //OUTPUT
+        if(tr)
+        {
+            Preorder_Output(tr -> LeftChild);
+            Preorder_Output(tr -> RightChild);
+            cout << tr -> data << " ";
+        }
+        
+    }
 
     //FIND AND RETURN MAX KEY 
     static void Findmaxkey(BinaryTreeNode *tr) 
@@ -223,17 +230,8 @@ class BinaryTreeNode
         //INSERTING A NEW KEY ON THE TREE.FOR EVERY INSERTION OF KEYS THAT ARE SMALLER THAN THEIR ROOT, THERE IS 
 		//A 50% CHANCE TO DECIDE TO PROCEED FROM THE LEFT AND A 50% CHANCE TO DECIDE TO PROCEED FROM THE RIGHT. 
 		
-		int random = (rand() % 2);
-		if(tr){
-			
-			if(random)
-		  	{
-      			cout<<"During the insertion "<<++_count<<", the key that is smaller than its root is proceeding to the right"<<endl;
-		  	}else{
-		 	 	cout<<"During the insertion "<<++_count<<", the key that is smaller than its root, is proceeding to the left"<<endl;
-		 	 }	
-			
-		}
+		int random;
+        int randoms[_count + 1];
         
         bool b = Searchsamekey(tr,k);
         if(b){
@@ -256,8 +254,10 @@ class BinaryTreeNode
                 a = tr;
         }
         
+        int position = 0;
         while(p)
         {
+
             pp = p;
             
             if (Ndbalance(p->RightChild) > 1 || Ndbalance(p->RightChild) < -1) 
@@ -270,9 +270,15 @@ class BinaryTreeNode
                 pal = p;
                
             }
-                      
+
+            if (i==1)
+            {
+                random = (rand() % 2);
+                randoms[position] = random;
+            }         
             
-            if (k>p->data || (k<p->data && random == 1))
+
+            if (k>p->data || (k<p->data && randoms[position] == 1))
 			{  								
 				p = p->RightChild;						               
             }else
@@ -283,6 +289,8 @@ class BinaryTreeNode
             if(Ndbalance(p)>1 || Ndbalance(p)<-1){
                 a = p;
             }
+
+            position++;
         }
         
         if(i==1)
@@ -298,13 +306,15 @@ class BinaryTreeNode
                 return tr;
             }
         
-            if(k>pp->data || (k<pp->data && random == 1))
+            if(k>pp->data || (k<pp->data && randoms[position] == 1))
             {
                 pp->RightChild = newnode;
+                cout<<"The new element has been inserted as right child of "<<pp->data<<endl;
             
             }else
             {
-                pp->LeftChild = newnode; 
+                pp->LeftChild = newnode;
+                cout<<"The new element has been inserted as left child of "<<pp->data<<endl; 
             }
         }
         }
@@ -417,7 +427,7 @@ class BinaryTreeNode
         	Findmaxkey(tr);
         	return tr; 
         	
-		} 		
+        }	
 	}
      
 
@@ -433,12 +443,12 @@ int showMenu()
 {
     int action;
 
-    cout << "--- ACTIONS MENU ---"          << endl << endl;
-    cout << "1. Show the Tree"                      << endl;
-    cout << "2. Show the Maximum value in the Tree" << endl;
-    cout << "3. Insert a value"                     << endl;
-    cout << "4. Delete a value"                     << endl;
-    cout << "5. Exit the menu"              << endl << endl;
+    cout << "--- ACTIONS MENU ---"              << endl << endl;
+    cout << "1. Show the Tree"                          << endl;
+    cout << "2. Show the Maximum value in the Tree"     << endl;
+    cout << "3. Insert a value"                         << endl;
+    cout << "4. Delete the Maximum value in the tree"   << endl;
+    cout << "5. Exit the menu"                  << endl << endl;
 
     do
     {
@@ -507,8 +517,11 @@ int main()
         switch (menu)
         {
             case 1:
+                cout << "Preorder: ";
                 BinaryTreeNode::Preorder_Output(tree);
-                cout << endl;
+                cout << endl << "Postorder: ";
+                BinaryTreeNode::Postorder_Output(tree);
+                cout << ((tree)? "" : "The tree is empty") << endl;
                 system("pause");
                 break;
             
