@@ -103,7 +103,8 @@ class BinaryTreeNode
     
     //CHECK FOR DUPLICATE VALUES
     
-    static bool Preorder_Search(BinaryTreeNode *tr,int k){  
+    static bool Preorder_Search(BinaryTreeNode *tr,int k)
+    {  
         if(tr)
         {
             if (tr->data == k)
@@ -242,11 +243,11 @@ class BinaryTreeNode
         for(int i=1; i<=2; i++)
         {
           
-        BinaryTreeNode *p = tr;
-        BinaryTreeNode *pp = 0;
-        
-        if(Ndbalance(p)>1 || Ndbalance(p)<-1){
-            a = tr;
+            BinaryTreeNode *p = tr;
+            BinaryTreeNode *pp = 0;
+            
+            if(Ndbalance(p)>1 || Ndbalance(p)<-1){
+                a = tr;
         }
         
         while(p)
@@ -257,7 +258,8 @@ class BinaryTreeNode
             {
                 par = p;
                 
-            }else if (Ndbalance(p->LeftChild) > 1 || Ndbalance(p->LeftChild) < -1){
+            }else if (Ndbalance(p->LeftChild) > 1 || Ndbalance(p->LeftChild) < -1)
+            {
                 
                 pal = p;
                
@@ -429,15 +431,14 @@ int showMenu()
     cout << "1. Show the Tree"                      << endl;
     cout << "2. Show the Maximum value in the Tree" << endl;
     cout << "3. Insert a value"                     << endl;
-    cout << "4. Search for a value"                 << endl;
-    cout << "5. Delete a node"                      << endl;
-    cout << "6. Exit the menu"              << endl << endl;
+    cout << "4. Delete a value"                     << endl;
+    cout << "5. Exit the menu"              << endl << endl;
 
     do
     {
         cout << "ENTER A NUMBER FOR AN ACTION: ";
         cin >> action;
-    } while (action > 6 || action < 1);
+    } while (action > 5 || action < 1);
 
     return action;
 }
@@ -524,21 +525,12 @@ int main()
                 break;
 
             case 4:
-                int searchKey;
-                cout << "Enter the number you want to search for: ";
-                cin >> searchKey;
-
-                cout << (BinaryTreeNode::Preorder_Search(tree, searchKey)? "This number exists in the tree" : "This number doesn't exist in the tree") << endl;
-                system("pause");
-                break;
-
-            case 5:
                 break;
 
         }
 
         menu = showMenu();
-    } while (menu != 6);
+    } while (menu != 5);
     
     return 0;
 }
