@@ -429,13 +429,14 @@ int showMenu()
     cout << "2. Show the Maximum value in the Tree" << endl;
     cout << "3. Insert a value"                     << endl;
     cout << "4. Search for a value"                 << endl;
-    cout << "5. Delete a node."             << endl << endl;
+    cout << "5. Delete a node."                     << endl;
+    cout << "6. Exit the menu"              << endl << endl;
 
     do
     {
         cout << "ENTER A NUMBER FOR AN ACTION: ";
         cin >> action;
-    } while (action > 5 || action < 1);
+    } while (action > 6 || action < 1);
 
     return action;
 }
@@ -497,25 +498,33 @@ int main()
     cout << endl << BinaryTreeNode::Returnmaxkey(tree) << endl;
     int menu = showMenu();
 
-    switch (menu)
-    {
-        case 1:
-            BinaryTreeNode::Preorder_Output(tree);
-            break;
-        
-        case 2:
-            break;
+    do {
+        switch (menu)
+        {
+            case 1:
+                BinaryTreeNode::Preorder_Output(tree);
+                cout << endl;
+                system("pause");
+                break;
+            
+            case 2:
+                cout << BinaryTreeNode::Returnmaxkey(tree) << endl;
+                system("pause");
+                break;
 
-        case 3:
-            break;
+            case 3:
+                break;
 
-        case 4:
-            break;
+            case 4:
+                break;
 
-        case 5:
-            break;
+            case 5:
+                break;
 
-    }
+        }
+
+        menu = showMenu();
+    } while (menu != 6);
     
     return 0;
 }
