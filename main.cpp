@@ -236,15 +236,17 @@ class BinaryTreeNode
     
     static BinaryTreeNode* Insert(BinaryTreeNode *tr,int k) //INSERT FUNCTION
     {
-
         //INSERTING A NEW KEY ON THE TREE.FOR EVERY INSERTION OF KEYS THAT ARE SMALLER THAN THEIR ROOT, THERE IS 
-		//A 50% CHANCE TO DECIDE TO PROCEED FROM THE LEFT AND A 50% CHANCE TO DECIDE TO PROCEED FROM THE RIGHT. 
-		
+		//A 50% CHANCE TO DECIDE TO PROCEED FROM THE LEFT AND A 50% CHANCE TO DECIDE TO PROCEED FROM THE RIGHT.
+
+        const int theseis = _count + 1;
+
 		int random;
-        int randoms[_count + 1];
+        int randoms[_count];
         
         bool b = Searchsamekey(tr,k);
-        if(b){
+        if(b)
+        {
         	cout<<"Given element already exists";
             return tr;
 		}
@@ -321,7 +323,8 @@ class BinaryTreeNode
                 pp->RightChild = newnode;
                 cout<<"The new element has been inserted as right child of "<<pp->data<<endl;
             
-            }else
+            }
+            else
             {
                 pp->LeftChild = newnode;
                 cout<<"The new element has been inserted as left child of "<<pp->data<<endl; 
@@ -449,26 +452,6 @@ class BinaryTreeNode
 
 };
 
-int showMenu()
-{
-    int action;
-
-    cout << "--- ACTIONS MENU ---"              << endl << endl;
-    cout << "1. Show the Tree"                          << endl;
-    cout << "2. Show the Maximum value in the Tree"     << endl;
-    cout << "3. Insert a value"                         << endl;
-    cout << "4. Delete the Maximum value in the tree"   << endl;
-    cout << "5. Exit the menu"                  << endl << endl;
-
-    do
-    {
-        cout << "ENTER A NUMBER FOR AN ACTION: ";
-        cin >> action;
-    } while (action > 5 || action < 1);
-
-    return action;
-}
-
 int main()
 { 
 	srand(time(NULL));
@@ -518,24 +501,51 @@ int main()
 	tree = BinaryTreeNode::Insert(tree, 72);
 	tree = BinaryTreeNode::Insert(tree, 40);
 	  	
-	
-	
-    int menu;
-    
-    do {
-        menu = showMenu();
-        switch (menu)
+    int action;
+    do 
+    {
+        //showing the menu of actions
+        cout << "\n--- ACTIONS MENU ---"            << endl << endl;
+        cout << "1. Insert a value"                         << endl;
+        cout << "2. Return the maximum value in the tree"   << endl;
+        cout << "3. Delete the Maximum value in the tree"   << endl;
+        cout << "4. Exit the menu"                  << endl << endl;
+
+        //after we show the user the menu of actions, we show the tree in preorder, inorder and postorder output
+        if (tree)
+        {
+            cout << "Preorder: ";
+            BinaryTreeNode::Preorder_Output(tree);
+
+            cout << endl << "Inorder: ";
+            BinaryTreeNode::Inorder_Output(tree);
+
+            cout << endl << "Postorder: ";
+            BinaryTreeNode::Postorder_Output(tree);
+        }
+        else
+        {
+            cout << "The tree is currently empty. Select 'insert' to add values" << endl;
+        }
+
+        cout << endl << endl;
+
+        //after that, the user chooses his action
+        do
+        {
+            cout << "ENTER A NUMBER FOR AN ACTION: ";
+            cin >> action;
+        } while (action > 4 || action < 1);
+
+
+        switch (action)
         {
             case 1:
-                cout << "Preorder: ";
-                BinaryTreeNode::Preorder_Output(tree);
+                int number;
+                cout << "Enter the number you want to insert: ";
+                cin >> number;
 
-                cout << endl << "Inorder: ";
-                BinaryTreeNode::Inorder_Output(tree);
-
-                cout << endl << "Postorder: ";
-                BinaryTreeNode::Postorder_Output(tree);
-                cout << ((tree)? "" : "The tree is empty") << endl;
+                tree = BinaryTreeNode::Insert(tree, number);
                 system("pause");
                 break;
             
@@ -545,19 +555,10 @@ int main()
                 break;
 
             case 3:
-                int number;
-                cout << "Enter the number you want to insert: ";
-                cin >> number;
-
-                tree = BinaryTreeNode::Insert(tree, number);
-                system("pause");
+                
                 break;
-
-            case 4:
-                break;
-
         }
-    } while (menu != 5);
+    } while (action != 4);
     
     return 0;
 }
