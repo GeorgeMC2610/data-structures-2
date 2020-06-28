@@ -197,6 +197,28 @@ class BinaryTreeNode
         	r = b;
 		}
     }
+
+    static BinaryTreeNode* Rightrotation(BinaryTreeNode *tr)
+    {
+        BinaryTreeNode* x  = tr -> LeftChild;
+        BinaryTreeNode* T2 = x  -> RightChild;
+
+        x  -> RightChild = tr;
+        tr -> LeftChild  = T2;
+
+        return x;
+    }
+
+    static BinaryTreeNode* LeftRotation(BinaryTreeNode *tr)
+    {
+        BinaryTreeNode *y  = tr -> RightChild;
+        BinaryTreeNode *T2 = y  -> LeftChild;
+
+        y  -> LeftChild  = tr;
+        tr -> RightChild = T2;
+
+        return tr;
+    }
     
     static void LeftrotationI(BinaryTreeNode *a, BinaryTreeNode * & r, BinaryTreeNode *pal, BinaryTreeNode *par)  
     {   
@@ -234,12 +256,97 @@ class BinaryTreeNode
         }                 
     }
 
-    static BinaryTreeNode* DeleteMaximum(BinaryTreeNode *tr, int k)
-    {
-        if (tr == NULL)
-            return tr;
-        //since we want to delete the maximum key we always lie in the right subtree
-        if (k > tr -> data)
+    static BinaryTreeNode* minValueNode(BinaryTreeNode* node)  
+    {  
+        BinaryTreeNode* current = node;  
+    
+        while (current->LeftChild != NULL)  
+            current = current->LeftChild;  
+    
+        return current;  
+    }
+
+    static BinaryTreeNode* deleteNode(BinaryTreeNode* tr, int key)  
+    {  
+        
+        // STEP 1: PERFORM STANDARD BST DELETE  
+        if (tr == NULL)  
+            return tr;  
+    
+        // If the key to be deleted is smaller  
+        // than the root's key, then it lies 
+        // in left subtree  
+        if (key < tr -> data)  
+            tr->LeftChild = deleteNode(tr->LeftChild, key);  
+    
+        // If the key to be deleted is greater  
+        // than the root's key, then it lies  
+        // in right subtree  
+        else if( key > tr->data )  
+            tr->RightChild = deleteNode(tr->RightChild, key);  
+    
+        // if key is same as root's key, then  
+        // This is the node to be deleted  
+        else
+        {  
+            // node with only one child or no child  
+            if( (tr->LeftChild == NULL) || (tr->RightChild == NULL) )  
+            {  
+                BinaryTreeNode *temp = tr->LeftChild ? tr->LeftChild : tr->RightChild;  
+    
+                // No child case  
+                if (temp == NULL)  
+                {  
+                    temp = tr;  
+                    tr = NULL;  
+                }  
+                else  
+                    *tr = *temp; 
+
+                free(temp);  
+            }  
+            else
+            {   
+                BinaryTreeNode* temp = minValueNode(tr->RightChild);  
+    
+                tr->data = temp->data;  
+      
+                tr->RightChild = deleteNode(tr->RightChild, temp->data);  
+            }  
+        }  
+     
+        if (tr == NULL)  
+        return tr;    
+     
+        int balance = Ndbalance(tr);  
+    
+        // If this node becomes unbalanced,  
+        // then there are 4 cases  
+    
+        // Left Left Case  
+        if (balance > 1 && Ndbalance(tr->LeftChild) >= 0)  
+            return Rightrotation(tr);  
+    
+        // Left Right Case  
+        if (balance > 1 && Ndbalance(tr->LeftChild) < 0)  
+        {  
+            tr->LeftChild = LeftRotation(tr->LeftChild);  
+            return Rightrotation(tr);  
+        }  
+    
+        // Right Right Case  
+        if (balance < -1 && Ndbalance(tr->RightChild) <= 0)  
+            return LeftRotation(tr);  
+    
+        // Right Left Case  
+        if (balance < -1 && Ndbalance(tr->RightChild) > 0)  
+        {  
+            tr->RightChild = Rightrotation(tr->RightChild);  
+            return LeftRotation(tr);  
+        }  
+
+        Findmaxkey(tr);
+        return tr;  
     }
     
     static BinaryTreeNode* Insert(BinaryTreeNode *tr,int k) //INSERT FUNCTION
@@ -545,11 +652,10 @@ int main()
             cin >> action;
         } while (action > 4 || action < 1);
 
-
+        int number, maximum;
         switch (action)
         {
             case 1:
-                int number;
                 cout << "Enter the number you want to insert: ";
                 cin >> number;
 
@@ -563,7 +669,8 @@ int main()
                 break;
 
             case 3:
-                
+                maximum = BinaryTreeNode::Returnmaxkey(tree);
+                tree    = BinaryTreeNode::deleteNode(tree, maximum);
                 break;
         }
     } while (action != 4);
