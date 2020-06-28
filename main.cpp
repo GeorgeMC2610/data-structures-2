@@ -292,7 +292,7 @@ class BinaryTreeNode
                 // No child case  
                 if (temp == NULL)  
                 {  
-                    temp = tr;  
+                    temp = tr;
                     tr = NULL;  
                 }  
                 else  
@@ -302,11 +302,12 @@ class BinaryTreeNode
             }  
             else
             {   
-                BinaryTreeNode* temp = minValueNode(tr->RightChild);  
+                Findmaxkey(tr->RightChild);
+                int temp = Returnmaxkey(tr->RightChild);  
     
-                tr->data = temp->data;  
+                tr->data = temp;  
       
-                tr->RightChild = deleteNode(tr->RightChild, temp->data);  
+                tr->RightChild = deleteNode(tr->RightChild, temp);  
             }  
         }  
      
