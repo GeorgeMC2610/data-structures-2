@@ -233,6 +233,14 @@ class BinaryTreeNode
             pal->LeftChild = a;
         }                 
     }
+
+    static BinaryTreeNode* DeleteMaximum(BinaryTreeNode *tr, int k)
+    {
+        if (tr == NULL)
+            return tr;
+        //since we want to delete the maximum key we always lie in the right subtree
+        if (k > tr -> data)
+    }
     
     static BinaryTreeNode* Insert(BinaryTreeNode *tr,int k) //INSERT FUNCTION
     {
