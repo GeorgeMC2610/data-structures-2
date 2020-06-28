@@ -267,21 +267,16 @@ class BinaryTreeNode
     }
 
     static BinaryTreeNode* deleteNode(BinaryTreeNode* tr, int key)  
-    {  
-        
-        // STEP 1: PERFORM STANDARD BST DELETE  
-        if (tr == NULL)  
-            return tr;  
-    
-        // If the key to be deleted is smaller  
-        // than the root's key, then it lies 
-        // in left subtree  
+    {   
+        if (tr == NULL)
+        {
+            cout << "The tree is empty. Unable to delete the maximum value." << endl;
+            return tr;
+        }
+     
         if (key < tr -> data)  
             tr->LeftChild = deleteNode(tr->LeftChild, key);  
-    
-        // If the key to be deleted is greater  
-        // than the root's key, then it lies  
-        // in right subtree  
+      
         else if( key > tr->data )  
             tr->RightChild = deleteNode(tr->RightChild, key);  
     
@@ -315,8 +310,8 @@ class BinaryTreeNode
             }  
         }  
      
-        if (tr == NULL)  
-        return tr;    
+        if (tr == NULL)
+            return tr;
      
         int balance = Ndbalance(tr);  
     
