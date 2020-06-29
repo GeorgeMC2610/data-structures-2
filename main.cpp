@@ -274,7 +274,7 @@ class BinaryTreeNode
             return tr;
         }
      
-        if (key < tr -> data)  
+        if (key < tr -> data)  //de ginetai to max nanai mikrotero apo kati (tote den einai max)
             tr->LeftChild = deleteNode(tr->LeftChild, key);  
       
         else if( key > tr->data )  
@@ -347,10 +347,11 @@ class BinaryTreeNode
     
     static BinaryTreeNode* Insert(BinaryTreeNode *tr,int k) //INSERT FUNCTION
     {
-        //INSERTING A NEW KEY ON THE TREE.FOR EVERY INSERTION OF KEYS THAT ARE SMALLER THAN THEIR ROOT, THERE IS 
+        //INSERTING A NEW KEY ON THE TREE.FOR KEYS THAT ARE SMALLER THAN THEIR ROOT, THERE IS 
 		//A 50% CHANCE TO DECIDE TO PROCEED FROM THE LEFT AND A 50% CHANCE TO DECIDE TO PROCEED FROM THE RIGHT.
+		//THE DECISION IS BEING MADE FOR EACH THAT NODE WHILE DESCENTING
 
-        const int theseis = _count + 1;
+        //const int theseis = _count + 1;
 
 		int random;
         int randoms[_count];
@@ -432,13 +433,15 @@ class BinaryTreeNode
             if(k>pp->data || (k<pp->data && randoms[position] == 1))
             {
                 pp->RightChild = newnode;
-                cout<<"The new element has been inserted as right child of "<<pp->data<<endl;
+                _count++;
+                cout<<"element "<<k<<" has been inserted as right child of "<<pp->data<<endl;
             
             }
             else
             {
                 pp->LeftChild = newnode;
-                cout<<"The new element has been inserted as left child of "<<pp->data<<endl; 
+                _count++;
+                cout<<"element "<<k<<" has been inserted as left child of "<<pp->data<<endl; 
             }
         }
         }
@@ -611,6 +614,9 @@ int main()
 	tree = BinaryTreeNode::Insert(tree, 345);
 	tree = BinaryTreeNode::Insert(tree, 72);
 	tree = BinaryTreeNode::Insert(tree, 40);
+	tree = BinaryTreeNode::Insert(tree, 89);
+	tree = BinaryTreeNode::Insert(tree, 87);
+	tree = BinaryTreeNode::Insert(tree, 90);
 	  	
     int action;
     do 
