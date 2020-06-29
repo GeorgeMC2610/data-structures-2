@@ -351,7 +351,6 @@ class BinaryTreeNode
 		//A 50% CHANCE TO DECIDE TO PROCEED FROM THE LEFT AND A 50% CHANCE TO DECIDE TO PROCEED FROM THE RIGHT.
 		//THE DECISION IS BEING MADE FOR EACH THAT NODE WHILE DESCENTING
 
-        //const int theseis = _count + 1;
 
 		int random;
         int randoms[_count];
@@ -474,17 +473,6 @@ class BinaryTreeNode
             Rightrotation(a->RightChild,a->RightChild,0,0);
             LeftrotationII(a,pal,par);
             
-            /*BinaryTreeNode *temp = a->RightChild->RightChild;
-            a->RightChild->RightChild = a->LeftChild;
-            a->LeftChild = a->RightChild;
-            a->RightChild = temp;
-            
-            if(par){
-                par->RightChild = a;
-            }else if(pal){
-                pal->LeftChild = a;
-			}*/
-			
 			Findmaxkey(tr);
 			return tr;
 			
