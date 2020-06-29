@@ -273,11 +273,8 @@ class BinaryTreeNode
             cout << "The tree is empty. Unable to delete the maximum value." << endl;
             return tr;
         }
-     
-        if (key < tr -> data)  //de ginetai to max nanai mikrotero apo kati (tote den einai max)
-            tr->LeftChild = deleteNode(tr->LeftChild, key);  
       
-        else if( key > tr->data )  
+        if( key > tr->data )  
             tr->RightChild = deleteNode(tr->RightChild, key);  
     
         // if key is same as root's key, then  
@@ -302,12 +299,11 @@ class BinaryTreeNode
             }  
             else
             {   
-                Findmaxkey(tr->RightChild);
-                int temp = Returnmaxkey(tr->RightChild);  
+                BinaryTreeNode *temp = minValueNode(tr->RightChild);  
     
-                tr->data = temp;  
+                tr->data = temp->data;  
       
-                tr->RightChild = deleteNode(tr->RightChild, temp);  
+                tr->RightChild = deleteNode(tr->RightChild, temp->data);  
             }  
         }  
      
@@ -665,7 +661,9 @@ int main()
 
             case 3:
                 maximum = BinaryTreeNode::Returnmaxkey(tree);
+                cout << "Deleting node with value: " << maximum << endl;
                 tree    = BinaryTreeNode::deleteNode(tree, maximum);
+                system("pause");
                 break;
         }
     } while (action != 4);
