@@ -453,22 +453,11 @@ class BinaryTreeNode
        
         int a_balance = Ndbalance(a); 
         
-        // Left Left Case
-
-        if (a_balance > 1 && k < a->LeftChild->data)   
-        {
-        	
-            Rightrotation(a,tr,pal,par);
-            
-            Findmaxkey(tr);
-            return tr;
-            
-        }
-        
+       
         // Right Left Case I (We need to check if the new node is in the left subtree of the right subtree of a,
         //in order to not match this case with RRII case)
         
-        else if (a_balance < -1 && k < a->RightChild->data && a->data < k && Preorder_Search(a->RightChild->LeftChild, k))   
+        if (a_balance < -1 && a->data < a->RightChild->LeftChild->data && Preorder_Search(a->RightChild->LeftChild, k))   
         {  
              
             Rightrotation(a->RightChild,a->RightChild,0,0);
@@ -480,11 +469,12 @@ class BinaryTreeNode
         
          // Right Left Case II  
         
-       else if (a_balance < -1 && k < a->RightChild->data && a->data > k && Preorder_Search(a->RightChild->LeftChild, k) )      
+       else if (a_balance < -1 && a->data > a->RightChild->LeftChild->data && Preorder_Search(a->RightChild->LeftChild, k))      
         {  
             Rightrotation(a->RightChild,a->RightChild,0,0);
+            LeftrotationII(a,pal,par);
             
-            BinaryTreeNode *temp = a->RightChild->RightChild;
+            /*BinaryTreeNode *temp = a->RightChild->RightChild;
             a->RightChild->RightChild = a->LeftChild;
             a->LeftChild = a->RightChild;
             a->RightChild = temp;
@@ -493,7 +483,7 @@ class BinaryTreeNode
                 par->RightChild = a;
             }else if(pal){
                 pal->LeftChild = a;
-			}
+			}*/
 			
 			Findmaxkey(tr);
 			return tr;
@@ -522,7 +512,7 @@ class BinaryTreeNode
 
         // Left Right Case I
         
-       else if (a_balance > 1 && k > a->LeftChild->data)  
+       else if (a_balance > 1 && Preorder_Search(a->LeftChild->RightChild, k) && a->LeftChild < a->LeftChild->RightChild)  
         {  
             
             LeftrotationI(a->LeftChild,a->LeftChild,0,0);  
@@ -535,12 +525,16 @@ class BinaryTreeNode
   
         // Left Right Case II 
         
-        else if (a_balance > 1 && k < a->LeftChild->data)  
+        else if (a_balance > 1 && Preorder_Search(a->LeftChild->RightChild, k) && a->LeftChild > a->LeftChild->RightChild)  
         {  
             
             BinaryTreeNode *temp = a->LeftChild->LeftChild;
             a->LeftChild->LeftChild = a->LeftChild->RightChild;
             a->LeftChild->RightChild = temp;
+            
+            BinaryTreeNode *temp2 = a->LeftChild->RightChild;
+            a->LeftChild->RightChild = a->LeftChild->LeftChild->RightChild;
+            a->LeftChild->LeftChild->RightChild = temp2;
             
             Rightrotation(a,tr,pal,par);  
             
@@ -548,7 +542,18 @@ class BinaryTreeNode
             return tr;
         } 
   
-  
+        // Left Left Case 
+
+        else if (a_balance > 1 && k < a->LeftChild->data)   
+        {
+        	
+            Rightrotation(a,tr,pal,par);
+            
+            Findmaxkey(tr);
+            return tr;
+            
+        }
+        
         else {
         	
         	Findmaxkey(tr);
