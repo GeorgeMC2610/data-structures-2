@@ -304,7 +304,8 @@ class BinaryTreeNode
 
                 int temp = tr->data;
                 tr->data = max_left;
-                tr->LeftChild->data = temp;
+               // tr->LeftChild->data = temp;
+                tr->LeftChild->Maxkey->data = temp;
                 tr->LeftChild = deleteNode(tr->LeftChild, temp);
             }  
         }  
