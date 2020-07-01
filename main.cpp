@@ -178,7 +178,8 @@ class BinaryTreeNode
         
     }
     
-    //ROTATION METHODS
+    
+    //ROTATION METHODS FOR INSERT FUNCTION
       
     static void Rightrotation(BinaryTreeNode *a, BinaryTreeNode * & r , BinaryTreeNode *pal, BinaryTreeNode *par)  
     {  
@@ -196,28 +197,6 @@ class BinaryTreeNode
         }else if (r){
         	r = b;
 		}
-    }
-
-    static BinaryTreeNode* Rightrotation(BinaryTreeNode *tr)
-    {
-        BinaryTreeNode* x  = tr -> LeftChild;
-        BinaryTreeNode* T2 = x  -> RightChild;
-
-        x  -> RightChild = tr;
-        tr -> LeftChild  = T2;
-
-        return x;
-    }
-
-    static BinaryTreeNode* LeftRotation(BinaryTreeNode *tr)
-    {
-        BinaryTreeNode *y  = tr -> RightChild;
-        BinaryTreeNode *T2 = y  -> LeftChild;
-
-        y  -> LeftChild  = tr;
-        tr -> RightChild = T2;
-
-        return tr;
     }
     
     static void LeftrotationI(BinaryTreeNode *a, BinaryTreeNode * & r, BinaryTreeNode *pal, BinaryTreeNode *par)  
@@ -255,18 +234,53 @@ class BinaryTreeNode
             pal->LeftChild = a;
         }                 
     }
+    
+    
+    //ROTATION METHODS FOR DELETE FUNCTION
+    
+    static BinaryTreeNode* Rightrotation(BinaryTreeNode *tr)
+    {
+        BinaryTreeNode *b = tr->LeftChild;  
+        BinaryTreeNode *bR = b->RightChild;  
+  
+        // Perform rotation  
+        b->RightChild = tr;  
+        tr->LeftChild = bR;
 
-    static int minValueNode(BinaryTreeNode* node)  
-    {  
-        BinaryTreeNode* current = node;  
-    
-        while (current->LeftChild != NULL)  
-            current = current->LeftChild;  
-    
-        return current->data;  
+        return b;
     }
 
-    static BinaryTreeNode* deleteNode(BinaryTreeNode* tr, int key)  
+    static BinaryTreeNode* LeftRotationI(BinaryTreeNode *tr)
+    {
+        BinaryTreeNode *b  = tr -> RightChild;
+        BinaryTreeNode *bL = b  -> LeftChild;
+
+        b  -> LeftChild  = tr;
+        tr -> RightChild = bL;
+
+        return b;
+    }
+    
+    static BinaryTreeNode* LeftRotationII(BinaryTreeNode *tr)
+    {
+        BinaryTreeNode *b  = tr -> RightChild;
+        BinaryTreeNode *trL = tr  -> LeftChild;
+        BinaryTreeNode *c = tr->RightChild->RightChild;  
+  
+        // Perform rotation  
+        b->RightChild = trL;  
+        tr->LeftChild = b;
+		tr->RightChild = c; 
+
+        return tr;
+    }
+
+
+
+
+
+
+    static BinaryTreeNode* deleteNode(BinaryTreeNode* tr, int key)  //DELETE FUNCTION
     {   
         if (tr == NULL)
         {
@@ -294,17 +308,16 @@ class BinaryTreeNode
                 else  
                     *tr = *temp; 
 
-                free(temp);  
+                //free(temp);  gia kapoio logo de leitourgei me thn free
             }  
             else
             {   
                 Findmaxkey(tr->LeftChild);
                 int max_left = Returnmaxkey(tr->LeftChild);
                 cout << "The left child max is: " << max_left << endl;
-
+ 
                 int temp = tr->data;
                 tr->data = max_left;
-               // tr->LeftChild->data = temp;
                 tr->LeftChild->Maxkey->data = temp;
                 tr->LeftChild = deleteNode(tr->LeftChild, temp);
             }  
@@ -312,37 +325,66 @@ class BinaryTreeNode
      
         if (tr == NULL)
             return tr;
+        
      
-        // int balance = Ndbalance(tr);  
+        int balance = Ndbalance(tr);  
     
-        // // If this node becomes unbalanced,  
-        // // then there are 4 cases  
+        // If this node becomes unbalanced,  
+        // then there are 7 cases  
     
-        // // Left Left Case  
-        // if (balance > 1 && Ndbalance(tr->LeftChild) >= 0)  
-        //     return Rightrotation(tr);  
+        // Left Left Case
+        
+        if (balance > 1 && Ndbalance(tr->LeftChild) >= 0)  
+            return Rightrotation(tr);  
     
-        // // Left Right Case  
-        // if (balance > 1 && Ndbalance(tr->LeftChild) < 0)  
-        // {  
-        //     tr->LeftChild = LeftRotation(tr->LeftChild);  
-        //     return Rightrotation(tr);  
-        // }  
+        // Left Right Case I
+        
+        if (balance > 1 && Ndbalance(tr->LeftChild) < 0 && tr->LeftChild->data < tr->LeftChild->RightChild->data)  
+        {  
+            tr->LeftChild = LeftRotationI(tr->LeftChild);  
+            return Rightrotation(tr);  
+        }
+        
+        // Left Right Case II 
+        
+        if (balance > 1 && Ndbalance(tr->LeftChild) < 0 && tr->LeftChild->data > tr->LeftChild->RightChild->data)  
+        {  
+            tr->LeftChild = LeftRotationII(tr->LeftChild);  
+            return Rightrotation(tr);  
+        }
     
-        // // Right Right Case  
-        // if (balance < -1 && Ndbalance(tr->RightChild) <= 0)  
-        //     return LeftRotation(tr);  
+        // Right Right Case I
+        
+        if (balance < -1 && Ndbalance(tr->RightChild) <= 0 && tr->RightChild->data > tr->data)  
+            return LeftRotationI(tr);
+            
+        // Right Right Case II
+        
+        if (balance < -1 && Ndbalance(tr->RightChild) <= 0 && tr->RightChild->data < tr->data)  
+            return LeftRotationII(tr);
     
-        // // Right Left Case  
-        // if (balance < -1 && Ndbalance(tr->RightChild) > 0)  
-        // {  
-        //     tr->RightChild = Rightrotation(tr->RightChild);  
-        //     return LeftRotation(tr);  
-        // }  
+        // Right Left Case I
+        
+        if (balance < -1 && Ndbalance(tr->RightChild) > 0 && tr->data < tr->RightChild->LeftChild->data)
+        {  
+            tr->RightChild = Rightrotation(tr->RightChild);  
+            return LeftRotationI(tr);  
+        }
+        
+        if (balance < -1 && Ndbalance(tr->RightChild) > 0 && tr->data > tr->RightChild->LeftChild->data)
+        {  
+            tr->RightChild = Rightrotation(tr->RightChild);  
+            return LeftRotationII(tr);  
+        } 
 
         Findmaxkey(tr);
         return tr;  
     }
+    
+    
+    
+    
+    
     
     static BinaryTreeNode* Insert(BinaryTreeNode *tr,int k) //INSERT FUNCTION
     {
@@ -385,12 +427,13 @@ class BinaryTreeNode
             if (Ndbalance(p->RightChild) > 1 || Ndbalance(p->RightChild) < -1) 
             {
                 par = p;
+                pal = 0;
                 
             }else if (Ndbalance(p->LeftChild) > 1 || Ndbalance(p->LeftChild) < -1)
             {
                 
                 pal = p;
-               
+                par = 0;
             }
 
             if (i==1)
@@ -411,14 +454,14 @@ class BinaryTreeNode
             if(Ndbalance(p)>1 || Ndbalance(p)<-1){
                 a = p;
             }
-
-            position++;
+            
+			position++;
         }
         
         if(i==1)
         {
             BinaryTreeNode *newnode = new BinaryTreeNode (k);
-        	
+                
             if (!tr)
             {
             	_count++;
@@ -427,6 +470,8 @@ class BinaryTreeNode
                 Findmaxkey(tr);
                 return tr;
             }
+            
+            position-=1;
         
             if(k>pp->data || (k<pp->data && randoms[position] == 1))
             {
@@ -445,32 +490,30 @@ class BinaryTreeNode
         }
     
     
-        
         //REBALANCING TREE
       
-       
         int a_balance = Ndbalance(a); 
         
        
         // Right Left Case I (We need to check if the new node is in the left subtree of the right subtree of a,
-        //in order to not match this case with RRII case)
+        //in order to not match this case with RR cases)
         
-        if (a_balance < -1 && a->data < a->RightChild->LeftChild->data && Preorder_Search(a->RightChild->LeftChild, k))   
+       if (a_balance < -1  && Preorder_Search(a->RightChild->LeftChild, k) && a->data < a->RightChild->LeftChild->data)   
         {  
-             
             Rightrotation(a->RightChild,a->RightChild,0,0);
             LeftrotationI(a,tr,pal,par);
             
             Findmaxkey(tr);
 			return tr;  
+
         } 
         
          // Right Left Case II  
         
-       else if (a_balance < -1 && a->data > a->RightChild->LeftChild->data && Preorder_Search(a->RightChild->LeftChild, k))      
-        {  
-            Rightrotation(a->RightChild,a->RightChild,0,0);
-            LeftrotationII(a,pal,par);
+        else if (a_balance < -1 && Preorder_Search(a->RightChild->LeftChild, k) && a->data > a->RightChild->LeftChild->data)      
+           {
+		   Rightrotation(a->RightChild,a->RightChild,0,0);
+           LeftrotationII(a,pal,par);
             
 			Findmaxkey(tr);
 			return tr;
@@ -479,8 +522,8 @@ class BinaryTreeNode
   
         // Right Right Case I
         
-        else if (a_balance < -1 && a->data < a->RightChild->data)
-        {		
+         else if (a_balance < -1 && a->data < a->RightChild->data){
+		 
              LeftrotationI(a,tr,pal,par);
 
              Findmaxkey(tr);
@@ -499,9 +542,8 @@ class BinaryTreeNode
 
         // Left Right Case I
         
-       else if (a_balance > 1 && Preorder_Search(a->LeftChild->RightChild, k) && a->LeftChild < a->LeftChild->RightChild)  
+       else if (a_balance > 1 && Preorder_Search(a->LeftChild->RightChild, k) && a->LeftChild->data < a->LeftChild->RightChild->data)  
         {  
-            
             LeftrotationI(a->LeftChild,a->LeftChild,0,0);  
             Rightrotation(a,tr,pal,par); 
             
@@ -512,17 +554,9 @@ class BinaryTreeNode
   
         // Left Right Case II 
         
-        else if (a_balance > 1 && Preorder_Search(a->LeftChild->RightChild, k) && a->LeftChild > a->LeftChild->RightChild)  
+        else  if (a_balance > 1 && Preorder_Search(a->LeftChild->RightChild, k) && a->LeftChild->data > a->LeftChild->RightChild->data)  
         {  
-            
-            BinaryTreeNode *temp = a->LeftChild->LeftChild;
-            a->LeftChild->LeftChild = a->LeftChild->RightChild;
-            a->LeftChild->RightChild = temp;
-            
-            BinaryTreeNode *temp2 = a->LeftChild->RightChild;
-            a->LeftChild->RightChild = a->LeftChild->LeftChild->RightChild;
-            a->LeftChild->LeftChild->RightChild = temp2;
-            
+            LeftrotationII(a->LeftChild,0,0);
             Rightrotation(a,tr,pal,par);  
             
             Findmaxkey(tr);
@@ -531,9 +565,8 @@ class BinaryTreeNode
   
         // Left Left Case 
 
-        else if (a_balance > 1 && k < a->LeftChild->data)   
+         else if (a_balance > 1 && k < a->LeftChild->data)   
         {
-        	
             Rightrotation(a,tr,pal,par);
             
             Findmaxkey(tr);
@@ -541,13 +574,12 @@ class BinaryTreeNode
             
         }
         
-        else {
-        	
+        else { 
         	Findmaxkey(tr);
         	return tr; 
         	
-        }	
-	}
+        }
+	} 
      
 
 
@@ -558,59 +590,65 @@ class BinaryTreeNode
 
 };
 
+
+
+
+
+
 int main()
 { 
 	srand(time(NULL));
-    //AVL TREE CREATION
+    // //AVL TREE CREATION
                     
                     
                     
-    //  Left subtree of root
+    // //  Left subtree of root
     
-    //Leafs 
-    BinaryTreeNode nd27 (27), nd8 (8), nd22 (22), nd20 (20);
+    // //Leafs 
+    // BinaryTreeNode nd27 (27), nd8 (8), nd22 (22), nd20 (20);
     
-    //Rest nodes
-    BinaryTreeNode nd10 (10,&nd8,0); 
-    BinaryTreeNode nd13 (13,0,&nd22); 
-    BinaryTreeNode nd26 (26,&nd13,&nd27);
-    BinaryTreeNode nd39 (39,&nd10,&nd20);
-    BinaryTreeNode nd41 (41,&nd39,&nd26); 
+    // //Rest nodes
+    // BinaryTreeNode nd10 (10,&nd8,0); 
+    // BinaryTreeNode nd13 (13,0,&nd22); 
+    // BinaryTreeNode nd26 (26,&nd13,&nd27);
+    // BinaryTreeNode nd39 (39,&nd10,&nd20);
+    // BinaryTreeNode nd41 (41,&nd39,&nd26); 
                                             
-    //  Right subtree of root
+    // //  Right subtree of root
                         
-    //Leafs
-    BinaryTreeNode nd43 (43), nd9 (9), nd52 (52), nd40 (40), nd90 (90), nd87 (87);
+    // //Leafs
+    // BinaryTreeNode nd43 (43), nd9 (9), nd52 (52), nd40 (40), nd53 (53) /*nd90 (90)*/, nd87 (87);
     
-    //Rest nodes
-    BinaryTreeNode nd56 (56,&nd43,&nd9);
-    BinaryTreeNode nd44 (44,&nd40,0);  
-    BinaryTreeNode nd61 (61,&nd56,&nd44);
-    BinaryTreeNode nd101 (101,&nd90,&nd87);  
-    BinaryTreeNode nd59 (59,&nd52,&nd101);
-    BinaryTreeNode nd67 (67,&nd61,&nd59); 
+    // //Rest nodes
+    // BinaryTreeNode nd56 (56,&nd43,&nd9);
+    // BinaryTreeNode nd44 (44,&nd40,0);  
+    // BinaryTreeNode nd61 (61,&nd56,&nd44);
+    // BinaryTreeNode nd59 (59,&nd53,&nd87);    //  BinaryTreeNode nd59 (59,&nd52,&nd101);
+    // BinaryTreeNode nd101 (101,&nd52,&nd59);  // BinaryTreeNode nd101 (101,&nd90,&nd87);
+    // BinaryTreeNode nd67 (67,&nd61,&nd101);   // BinaryTreeNode nd67 (67,&nd61,&nd59);
 
-    // Root
+    // // Root
      
-    BinaryTreeNode rt50 (50,&nd41,&nd67); 
-    BinaryTreeNode *root = &rt50; //Pointer to root. 
-    //Now root is our tree because its the node that contains the rest nodes.
-    BinaryTreeNode *tree = root;
+    // BinaryTreeNode rt50 (50,&nd41,&nd67); 
+    // BinaryTreeNode *root = &rt50; //Pointer to root. 
+    // //Now root is our tree because its the node that contains the rest nodes.
+    // BinaryTreeNode *tree = root;
+    
     //###############################
-    BinaryTreeNode::Findmaxkey(tree);
+  //  BinaryTreeNode::Findmaxkey(tree);
 
-    // BinaryTreeNode *tree = 0;
-   
-    // tree = BinaryTreeNode::Insert(tree, 80);
-    // tree = BinaryTreeNode::Insert(tree, 70);
-	// tree = BinaryTreeNode::Insert(tree, 86);
-	// tree = BinaryTreeNode::Insert(tree, 345);
-	// tree = BinaryTreeNode::Insert(tree, 72);
-	// tree = BinaryTreeNode::Insert(tree, 40);
-	// tree = BinaryTreeNode::Insert(tree, 89);
-	// tree = BinaryTreeNode::Insert(tree, 87);
-	// tree = BinaryTreeNode::Insert(tree, 90);
-	  	
+   BinaryTreeNode *tree = 0;
+   tree = BinaryTreeNode::Insert(tree, 80);
+   tree = BinaryTreeNode::Insert(tree, 70);
+   tree = BinaryTreeNode::Insert(tree, 86);
+   tree = BinaryTreeNode::Insert(tree, 345);
+   tree = BinaryTreeNode::Insert(tree, 92);
+   tree = BinaryTreeNode::Insert(tree, 40);
+   tree = BinaryTreeNode::Insert(tree, 89);
+   tree = BinaryTreeNode::Insert(tree, 87);
+   tree = BinaryTreeNode::Insert(tree, 90);
+
+	  
     int action;
     do 
     {
