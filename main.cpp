@@ -367,6 +367,8 @@ class BinaryTreeNode
             return LeftRotationI(tr);  
         }
         
+        // Right Left Case II
+
         if (balance < -1 && Ndbalance(tr->RightChild) > 0 && tr->data > tr->RightChild->LeftChild->data)
         {  
             tr->RightChild = Rightrotation(tr->RightChild);  
