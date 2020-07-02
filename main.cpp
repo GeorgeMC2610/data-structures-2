@@ -276,10 +276,6 @@ class BinaryTreeNode
     }
 
 
-
-
-
-
     static BinaryTreeNode* deleteNode(BinaryTreeNode* tr, int key)  //DELETE FUNCTION
     {   
         if (tr == NULL)
@@ -308,7 +304,7 @@ class BinaryTreeNode
                 else  
                     *tr = *temp; 
 
-                //free(temp);  gia kapoio logo de leitourgei me thn free
+                temp = NULL;  //gia kapoio logo de leitourgei me thn free
             }  
             else
             {   
@@ -592,73 +588,69 @@ class BinaryTreeNode
 
 
 
-
-
-
 int main()
 { 
 	srand(time(NULL));
-    // //AVL TREE CREATION
+    //AVL TREE CREATION
                     
                     
                     
-    // //  Left subtree of root
+    //  Left subtree of root
     
-    // //Leafs 
-    // BinaryTreeNode nd27 (27), nd8 (8), nd22 (22), nd20 (20);
+    //Leafs 
+    BinaryTreeNode nd27 (27), nd8 (8), nd22 (22), nd20 (20);
     
-    // //Rest nodes
-    // BinaryTreeNode nd10 (10,&nd8,0); 
-    // BinaryTreeNode nd13 (13,0,&nd22); 
-    // BinaryTreeNode nd26 (26,&nd13,&nd27);
-    // BinaryTreeNode nd39 (39,&nd10,&nd20);
-    // BinaryTreeNode nd41 (41,&nd39,&nd26); 
+    //Rest nodes
+    BinaryTreeNode nd10 (10,&nd8,0); 
+    BinaryTreeNode nd13 (13,0,&nd22); 
+    BinaryTreeNode nd26 (26,&nd13,&nd27);
+    BinaryTreeNode nd39 (39,&nd10,&nd20);
+    BinaryTreeNode nd41 (41,&nd39,&nd26); 
                                             
-    // //  Right subtree of root
+    //  Right subtree of root
                         
-    // //Leafs
-    // BinaryTreeNode nd43 (43), nd9 (9), nd52 (52), nd40 (40), nd53 (53) /*nd90 (90)*/, nd87 (87);
+    //Leafs
+    BinaryTreeNode nd43 (43), nd9 (9), nd52 (52), nd40 (40), nd53 (53) /*nd90 (90)*/, nd87 (87);
     
-    // //Rest nodes
-    // BinaryTreeNode nd56 (56,&nd43,&nd9);
-    // BinaryTreeNode nd44 (44,&nd40,0);  
-    // BinaryTreeNode nd61 (61,&nd56,&nd44);
-    // BinaryTreeNode nd59 (59,&nd53,&nd87);    //  BinaryTreeNode nd59 (59,&nd52,&nd101);
-    // BinaryTreeNode nd101 (101,&nd52,&nd59);  // BinaryTreeNode nd101 (101,&nd90,&nd87);
-    // BinaryTreeNode nd67 (67,&nd61,&nd101);   // BinaryTreeNode nd67 (67,&nd61,&nd59);
+    //Rest nodes
+    BinaryTreeNode nd56 (56,&nd43,&nd9);
+    BinaryTreeNode nd44 (44,&nd40,0);  
+    BinaryTreeNode nd61 (61,&nd56,&nd44);
+    BinaryTreeNode nd59 (59,&nd53,&nd87);    //  BinaryTreeNode nd59 (59,&nd52,&nd101);
+    BinaryTreeNode nd101 (101,&nd52,&nd59);  // BinaryTreeNode nd101 (101,&nd90,&nd87);
+    BinaryTreeNode nd67 (67,&nd61,&nd101);   // BinaryTreeNode nd67 (67,&nd61,&nd59);
 
-    // // Root
+    // Root
      
-    // BinaryTreeNode rt50 (50,&nd41,&nd67); 
-    // BinaryTreeNode *root = &rt50; //Pointer to root. 
-    // //Now root is our tree because its the node that contains the rest nodes.
-    // BinaryTreeNode *tree = root;
+    BinaryTreeNode rt50 (50,&nd41,&nd67); 
+    BinaryTreeNode *root = &rt50; //Pointer to root. 
+    //Now root is our tree because its the node that contains the rest nodes.
+    BinaryTreeNode *tree = root;
     
     //###############################
-  //  BinaryTreeNode::Findmaxkey(tree);
+    BinaryTreeNode::Findmaxkey(tree);
 
-   BinaryTreeNode *tree = 0;
-   tree = BinaryTreeNode::Insert(tree, 80);
-   tree = BinaryTreeNode::Insert(tree, 70);
-   tree = BinaryTreeNode::Insert(tree, 86);
-   tree = BinaryTreeNode::Insert(tree, 345);
-   tree = BinaryTreeNode::Insert(tree, 92);
-   tree = BinaryTreeNode::Insert(tree, 40);
-   tree = BinaryTreeNode::Insert(tree, 89);
-   tree = BinaryTreeNode::Insert(tree, 87);
-   tree = BinaryTreeNode::Insert(tree, 90);
+    //BinaryTreeNode *tree = 0;
+    //    tree = BinaryTreeNode::Insert(tree, 80);
+    //    tree = BinaryTreeNode::Insert(tree, 70);
+    //    tree = BinaryTreeNode::Insert(tree, 86);
+    //    tree = BinaryTreeNode::Insert(tree, 345);
+    //    tree = BinaryTreeNode::Insert(tree, 92);
+    //    tree = BinaryTreeNode::Insert(tree, 40);
+    //    tree = BinaryTreeNode::Insert(tree, 89);
+    //    tree = BinaryTreeNode::Insert(tree, 87);
+    //    tree = BinaryTreeNode::Insert(tree, 90);
 
-	  
+    //showing the menu of actions
+    cout << "\n--- ACTIONS MENU ---"            << endl << endl;
+    cout << "1. Insert a value"                         << endl;
+    cout << "2. Return the maximum value of the tree"   << endl;
+    cout << "3. Delete the Maximum value of the tree"   << endl;
+    cout << "4. Exit the menu"                  << endl << endl; 
+
     int action;
     do 
     {
-        //showing the menu of actions
-        cout << "\n--- ACTIONS MENU ---"            << endl << endl;
-        cout << "1. Insert a value"                         << endl;
-        cout << "2. Return the maximum value in the tree"   << endl;
-        cout << "3. Delete the Maximum value in the tree"   << endl;
-        cout << "4. Exit the menu"                  << endl << endl;
-
         //after we show the user the menu of actions, we show the tree in preorder, inorder and postorder output
         if (tree)
         {
@@ -676,13 +668,14 @@ int main()
             cout << "The tree is currently empty. Select 'insert' to add values" << endl;
         }
 
-        cout << endl << endl;
+        cout << endl;
 
         //after that, the user chooses his action
         do
         {
-            cout << "ENTER A NUMBER FOR AN ACTION: ";
+            cout << "\nENTER A NUMBER FOR AN ACTION: ";
             cin >> action;
+            
         } while (action > 4 || action < 1);
 
         int number, maximum;
@@ -694,11 +687,13 @@ int main()
 
                 tree = BinaryTreeNode::Insert(tree, number);
                 system("pause");
+                cout << endl;
                 break;
             
             case 2:
                 cout << "The maximum value of the tree is: " << BinaryTreeNode::Returnmaxkey(tree) << endl;
                 system("pause");
+                cout << endl;
                 break;
 
             case 3:
@@ -706,6 +701,7 @@ int main()
                 cout << "Deleting node with value: " << maximum << endl;
                 tree    = BinaryTreeNode::deleteNode(tree, maximum);
                 system("pause");
+                cout << endl;
                 break;
         }
     } while (action != 4);
