@@ -278,43 +278,53 @@ class BinaryTreeNode
 
     static BinaryTreeNode* deleteNode(BinaryTreeNode* tr, int key)  //DELETE FUNCTION
     {   
+        //if the tree doesn't exist, then we can't run the delete function.
         if (tr == NULL)
         {
             cout << "The tree is empty. Unable to delete the maximum value." << endl;
             return tr;
         }
-      
+
+        //first, we lie on the right subtrees of the root
+        //then we check to see if the current node's data is less than the key to be deleted
+        //if it is, then the current node is not the one to be deleted.
         if( key > tr->data )  
             tr->RightChild = deleteNode(tr->RightChild, key);  
-        // if key is same as root's key, then  
-        // This is the node to be deleted  
+        
+        //else, we know that this is the node to be deleted  
         else
         {  
-            // node with only one child or no child  
+            //one child or zero children case  
             if( (tr->LeftChild == NULL) || (tr->RightChild == NULL) )  
             {
+                //we create a dummy node same as the left or right child node (whichever exsists)
                 BinaryTreeNode *temp = tr->LeftChild ? tr->LeftChild : tr->RightChild;  
     
-                // No child case  
+                //if temp is NULL then we know there are zero children, so this is the leaf to be deleted  
                 if (temp == NULL)  
                 {  
                     temp = tr;
                     tr = NULL;  
-                }  
+                }
+                //else we alternate the two nodes, so the maximum key becomes a leaf, and then we delete the leaf.
                 else  
                     *tr = *temp; 
 
-                temp = NULL;  //gia kapoio logo de leitourgei me thn free
-            }  
+                temp = NULL;
+            }
+            //else, we find the maximum key of the left subtrees, so we can replace it with the current node, until the maximum key becomes a leaf.
             else
             {   
+                //we find the max key of the left children
                 Findmaxkey(tr->LeftChild);
                 int max_left = Returnmaxkey(tr->LeftChild);
-                cout << "The left child max is: " << max_left << endl;
  
+                //we change the current node's data with the maximum left-child node's data
                 int temp = tr->data;
                 tr->data = max_left;
                 tr->LeftChild->Maxkey->data = temp;
+
+                //and we continue to do that, until the maximum value becomes a leaf.
                 tr->LeftChild = deleteNode(tr->LeftChild, temp);
             }  
         }  
@@ -322,22 +332,20 @@ class BinaryTreeNode
         if (tr == NULL)
             return tr;
         
-     
+        //we get each node's balance, to rebalance it if necessary
         int balance = Ndbalance(tr);  
     
-        // If this node becomes unbalanced,  
-        // then there are 7 cases  
+        //If this node becomes unbalanced, then there are 7 cases:
     
         // Left Left Case
-        
         if (balance > 1 && Ndbalance(tr->LeftChild) >= 0)
         { 
             tr = Rightrotation(tr);
             Findmaxkey(tr);
             return tr;  
         }
+
         // Left Right Case I
-        
         if (balance > 1 && Ndbalance(tr->LeftChild) < 0 && tr->LeftChild->data < tr->LeftChild->RightChild->data)  
         {  
             tr->LeftChild = LeftRotationI(tr->LeftChild);  
@@ -347,7 +355,6 @@ class BinaryTreeNode
         }
         
         // Left Right Case II 
-        
         if (balance > 1 && Ndbalance(tr->LeftChild) < 0 && tr->LeftChild->data > tr->LeftChild->RightChild->data)  
         {  
             tr->LeftChild = LeftRotationII(tr->LeftChild);  
@@ -357,7 +364,6 @@ class BinaryTreeNode
         }
     
         // Right Right Case I
-        
         if (balance < -1 && Ndbalance(tr->RightChild) <= 0 && tr->RightChild->data > tr->data)  
         {
             tr = LeftRotationI(tr);
@@ -366,7 +372,6 @@ class BinaryTreeNode
         }
             
         // Right Right Case II
-        
         if (balance < -1 && Ndbalance(tr->RightChild) <= 0 && tr->RightChild->data < tr->data)  
         {
             tr = LeftRotationII(tr);
@@ -375,7 +380,6 @@ class BinaryTreeNode
         }
     
         // Right Left Case I
-        
         if (balance < -1 && Ndbalance(tr->RightChild) > 0 && tr->data < tr->RightChild->LeftChild->data)
         {  
             tr->RightChild = Rightrotation(tr->RightChild);  
@@ -385,7 +389,6 @@ class BinaryTreeNode
         }
         
         // Right Left Case II
-
         if (balance < -1 && Ndbalance(tr->RightChild) > 0 && tr->data > tr->RightChild->LeftChild->data)
         {  
             tr->RightChild = Rightrotation(tr->RightChild);  
@@ -394,6 +397,7 @@ class BinaryTreeNode
             return tr;  
         }
 
+        //If rebalancing is not necessary, we update the maximum key element and we return the tree.
         Findmaxkey(tr);
         return tr;  
     }
