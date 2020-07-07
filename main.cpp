@@ -177,6 +177,7 @@ class BinaryTreeNode
     
     
     //ROTATION METHODS FOR INSERT FUNCTION
+    //Since Insert() uses 4 different pointers, we must create functions that include those 4 pointers inside the rotation functions.
       
     static void Rightrotation(BinaryTreeNode *a, BinaryTreeNode * & r , BinaryTreeNode *pal, BinaryTreeNode *par)  
     {  
@@ -187,22 +188,27 @@ class BinaryTreeNode
         b->RightChild = a;  
         a->LeftChild = bR;
         
-        if(par){
+        if(par)
+        {
             par->RightChild = b;
-        }else if(pal){
+        }
+        else if(pal)
+        {
             pal->LeftChild = b;
-        }else if (r){
+        }
+        else if (r)
+        {
         	r = b;
 		}
     }
     
     static void LeftrotationI(BinaryTreeNode *a, BinaryTreeNode *&r, BinaryTreeNode *pal, BinaryTreeNode *par)  
     {   
-        BinaryTreeNode *b = a->RightChild;  
+        BinaryTreeNode *b  = a->RightChild;  
         BinaryTreeNode *bL = b->LeftChild;      
 
         // Perform rotation  
-        b->LeftChild = a;
+        b->LeftChild  = a;
         a->RightChild = bL;
 		              
         if(par)
@@ -221,13 +227,13 @@ class BinaryTreeNode
 
     static void LeftrotationII(BinaryTreeNode *a, BinaryTreeNode *pal, BinaryTreeNode *par)  
     {     
-        BinaryTreeNode *b = a->RightChild;  
+        BinaryTreeNode *b  = a->RightChild;  
         BinaryTreeNode *aL = a->LeftChild;
-		BinaryTreeNode *c = a->RightChild->RightChild;  
+		BinaryTreeNode *c  = a->RightChild->RightChild;  
   
         // Perform rotation  
         b->RightChild = aL;  
-        a->LeftChild = b;
+        a->LeftChild  = b;
 		a->RightChild = c; 
          
         if(par)
@@ -632,9 +638,10 @@ int main()
             cout << endl << "Postorder: ";
             BinaryTreeNode::Postorder_Output(tree);
         }
+        //if the tree is empty, we assist the user to start adding nodes
         else
         {
-            cout << "The tree is currently empty. Type '1' to start adding values" << endl;
+            cout << "The tree is currently empty. Type '1' to start adding nodes." << endl;
         }
 
         cout << endl;
@@ -647,6 +654,9 @@ int main()
             
         } while (action > 4 || action < 1);
 
+        //switch case for each action
+        //after each action we use system(pause), so the user can see the changes that have been made
+
         int number, maximum;
         switch (action)
         {
@@ -658,7 +668,7 @@ int main()
                 system("pause");
                 cout << endl;
                 break;
-            
+
             case 2:
                 cout << "The maximum value of the tree is: " << BinaryTreeNode::Returnmaxkey(tree) << endl;
                 system("pause");
