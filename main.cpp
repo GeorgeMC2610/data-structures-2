@@ -12,7 +12,7 @@ class BinaryTreeNode
                                             //PUBLIC CLASS MEMBERS 
 
  
-    ///////////////////////////////////////////CONSTRACTORS FOR TREE//////////////////////////////////////////////////
+    ///////////////////////////////////////////CONSTRUCTORS FOR TREE//////////////////////////////////////////////////
     
     public:
         BinaryTreeNode()
@@ -31,9 +31,9 @@ class BinaryTreeNode
     ////////////////////////////////////////////////METHODS//////////////////////////////////////////////////////////
 
     
-    
+    //OUTPUT METHODS
     static void Preorder_Output(BinaryTreeNode *tr)
-    {   //OUTPUT
+    {   
         if(tr)
         {
             cout << tr -> data << " ";
@@ -63,26 +63,33 @@ class BinaryTreeNode
         }
     }
 
-    //FIND MAX KEY
-    
+    //MAXKEY ELEMENT UPDATING METHOD
     static void Findmaxkey(BinaryTreeNode *tr) 
     {  
-        //Find max key element of tree
+        //If the tree is not empty
         if (tr)
         {
+            //First we create a dummy node, same as the tree's node
             BinaryTreeNode *p = tr;
+
+            //and then we set its value as the maximum key
             int maxkey = p -> data;
             tr -> Maxkey = p;
+
+            //then we lie on the right subtrees of the root
             p = p -> RightChild;
         
             while(p)
             {
-                if (p -> data > maxkey)
+                //and if the right subtree has a bigger value than the parent
+                if (p->data > maxkey)
                 {
-                    maxkey = p -> data;
-                    tr -> Maxkey = p;
+                    //update the Maxkey pointer of the tree
+                    maxkey       = p->data;
+                    tr->Maxkey   = p;
                 }
                 
+                //and then we move onto the next subtree
                 p = p -> RightChild;
             }
         }
@@ -112,7 +119,7 @@ class BinaryTreeNode
     }
     
     //CHECK FOR DUPLICATE VALUES
-    
+    //RECURSIVE METHOD, FOR FINDING
     static bool Preorder_Search(BinaryTreeNode *tr, int k)
     {  
         if(tr)
@@ -127,24 +134,32 @@ class BinaryTreeNode
 		return false;	    	 
     }
     
-    static bool Searchsamekey(BinaryTreeNode *tr, int k){ 
-        //Search if given key element already exists in tree
+    //RECURSIVE METHOD FOR FINDING DUPLICATES
+    static bool Searchsamekey(BinaryTreeNode *tr, int k)
+    {
+        //The variable 'k' is the potential duplicate
+        //Starting from the root (if the tree is not NULL)
         if(tr)
         {   
+            //if the root's value is the same as 'k', then return true; there is a duplicate.
             if (tr->data == k)
             {
                 return true; 
             }
+            //if 'k' is bigger than the root's value, we lie in the right subtrees of the root
             else if (k > tr->data)
             {
+                //we call the function itself with the same k element, except we search in the right subtrees.
                 return Searchsamekey(tr->RightChild, k);
             }
-            else if(Preorder_Search(tr,k))
+            //if it's smaller than the root's value, we call the boolean Preoder_Search method, which has the ability to search in the left subtrees of the root
+            else if(Preorder_Search(tr,k))  //since it's boolean, we can include it in an 'if' statement.
             {
             	return true; 
             }
         }
         
+        //If none of those cases were true, even if the tree is empty, it means that there is no duplicates. 
         return false; 
     }
 
@@ -152,10 +167,12 @@ class BinaryTreeNode
     
     static int Ndbalance(BinaryTreeNode *nd)  
     {  
+        //If the tree doesn't exist, there is no balance
         if (nd == 0)
         {
             return 0;
         }
+        //The balance is the height of the left child subtracted with the height of the right child
         else
         {
             return (Subtreeheight(nd->LeftChild) - Subtreeheight(nd->RightChild)); 
@@ -332,9 +349,7 @@ class BinaryTreeNode
                         
 
 
-    static BinaryTreeNode* deleteNode(BinaryTreeNode* tr, int key)  
-    
-    //We are searching the key k with the help of tr pointer. k is the maxkey of tree
+    static BinaryTreeNode* deleteNode(BinaryTreeNode* tr, int key)  //We are searching the key k with the help of tr pointer. k is the maxkey of tree
     {   
         //if the tree doesn't exist, then we can't run the delete function.
         if (tr == NULL)
@@ -343,10 +358,9 @@ class BinaryTreeNode
             return tr;
         }
 
-        
         //We check to see if the current node's data is less than the key to be deleted
         //if it is, then the current node is not the one to be deleted.
-        //Then we lie on the right subtrees of the root
+        //Then we lie on the right subtrees of the root (since all values from the left are smaller.)
         
         if( key > tr->data )  
             tr->RightChild = deleteNode(tr->RightChild, key);  
@@ -372,7 +386,7 @@ class BinaryTreeNode
 
                 temp = NULL;
             }
-            //else, we find the maximum key of the left subtree, so we can trade it's value with the current node (maximum key).
+            //else, we find the maximum key of the left subtree, so we can trade its value with the current node (maximum key).
             //This proccess is being repeated until the maximum key becomes a leaf.
             else
             {   
@@ -411,9 +425,8 @@ class BinaryTreeNode
         
         //functions of rotations are also being described above (see ROTATION METHODS FOR DELETE FUNCTION)
         
-        
-        
-    
+
+
         // Left Left Case
         
         //This is the classic AVL LL case. Balance > 1 means that the problem has been made from the left. LeftChild's balance >=0
@@ -537,7 +550,7 @@ class BinaryTreeNode
 
 		int random;
         int randoms[_count]; //This data is being used in order to create a random number and store it in array randoms every 
-                            //time p->data is bigger than k. We explain these in depth bellow 
+                            //time p->data is bigger than k. We explain these in depth below 
         
         bool b = Searchsamekey(tr,k); //Checking for duplicate value
         if(b) //if k already in tree return root (tr is root)
