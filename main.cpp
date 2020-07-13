@@ -12,7 +12,7 @@ class BinaryTreeNode
                                             //PUBLIC CLASS MEMBERS 
 
  
-    ///////////////////////////////////////////CONSTRACTORS FOR TREE//////////////////////////////////////////////////
+    ///////////////////////////////////////////CONSTRUCTORS FOR TREE//////////////////////////////////////////////////
     
     public:
         BinaryTreeNode()
@@ -70,19 +70,26 @@ class BinaryTreeNode
         //Find max key element of tree
         if (tr)
         {
+            //we create a dummy tree same as the starting one, and we set the maximum value as the root
             BinaryTreeNode *p = tr;
             int maxkey = p -> data;
             tr -> Maxkey = p;
+
+            //then we lie onto the root's right subtree (since the left subtrees only have values less than the root)
             p = p -> RightChild;
         
+            //and while p is not null
             while(p)
             {
+                //we chech to see if there's any value bigger than the starting one
                 if (p -> data > maxkey)
                 {
+                    //and if there is, we update the maximum element
                     maxkey = p -> data;
                     tr -> Maxkey = p;
                 }
                 
+                //then we continue to check for all the right subtrees
                 p = p -> RightChild;
             }
         }
@@ -115,6 +122,7 @@ class BinaryTreeNode
     
     static bool Preorder_Search(BinaryTreeNode *tr, int k)
     {  
+        //recursive function to search for values in preorder
         if(tr)
         {
             if (tr->data == k)
@@ -127,24 +135,31 @@ class BinaryTreeNode
 		return false;	    	 
     }
     
-    static bool Searchsamekey(BinaryTreeNode *tr, int k){ 
+    static bool Searchsamekey(BinaryTreeNode *tr, int k)
+    { 
         //Search if given key element already exists in tree
         if(tr)
         {   
+            //if the value of the node is the same, then we have a duplicate 
             if (tr->data == k)
             {
                 return true; 
             }
+
+            //if the key is less than the current node, then we lie on the right subtree
             else if (k > tr->data)
             {
                 return Searchsamekey(tr->RightChild, k);
             }
+
+            //else, it means that the key could be anywhere else, so we search for it using preorder search
             else if(Preorder_Search(tr,k))
             {
             	return true; 
             }
         }
         
+        //otherwise, there are no duplicates
         return false; 
     }
 
@@ -152,10 +167,13 @@ class BinaryTreeNode
     
     static int Ndbalance(BinaryTreeNode *nd)  
     {  
+        //if there is no node, then there is no balance
         if (nd == 0)
         {
             return 0;
         }
+
+        //otherwise we return the balance, which is the left children height subtracted with the right children height.
         else
         {
             return (Subtreeheight(nd->LeftChild) - Subtreeheight(nd->RightChild)); 
@@ -310,6 +328,7 @@ class BinaryTreeNode
     
     static int Returnmaxkey(BinaryTreeNode *tr)
     {
+        //Showing the max key element in O(1)
         if (tr)
         {
             return tr -> Maxkey -> data;
