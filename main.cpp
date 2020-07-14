@@ -1,7 +1,6 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
-#include <string>
 
 using namespace std;
 
@@ -33,7 +32,7 @@ class BinaryTreeNode
     
     
     static void Preorder_Output(BinaryTreeNode *tr)
-    {   //OUTPUT
+    {   //PREORDER OUTPUT OF ELEMENTS  
         if(tr)
         {
             cout << tr -> data << " ";
@@ -44,7 +43,7 @@ class BinaryTreeNode
 
 
     static void Inorder_Output(BinaryTreeNode *tr)
-    {   //OUTPUT
+    {   //INORDER OUTPUT OF ELEMENTS
         if(tr)
         {
             Inorder_Output(tr -> LeftChild);
@@ -54,7 +53,7 @@ class BinaryTreeNode
     }
 
     static void Postorder_Output(BinaryTreeNode *tr)
-    {   //OUTPUT
+    {   //POSTORDER OUTPUT OF ELEMENTS
         if(tr)
         {
             Postorder_Output(tr -> LeftChild);
@@ -128,11 +127,14 @@ class BinaryTreeNode
             if (tr->data == k)
                 return true; 
             
-            return Preorder_Search(tr -> LeftChild, k);
-            return Preorder_Search(tr -> RightChild, k);
+            if (Preorder_Search(tr -> LeftChild, k)) //If left subtree has the element k return true
+            	return true;
+            	
+            if(Preorder_Search(tr -> RightChild, k)) //If right subtree has the element k return true
+            	return true;
         }
         
-		return false;	    	 
+		return false;  //If element k is not in the tree return false	 
     }
     
     static bool Searchsamekey(BinaryTreeNode *tr, int k)
@@ -329,16 +331,7 @@ class BinaryTreeNode
     static int Returnmaxkey(BinaryTreeNode *tr)
     {
         //Showing the max key element in O(1)
-        if (tr)
-        {
-            return tr -> Maxkey -> data;
-        }
-
-        else
-        {
-            cout << "The tree is NULL" << endl;
-            return 0;
-        }
+            return tr -> Maxkey -> data;          
     }
     
 
@@ -355,19 +348,12 @@ class BinaryTreeNode
     
     //We are searching the key k with the help of tr pointer. k is the maxkey of tree
     {   
-        //if the tree doesn't exist, then we can't run the delete function.
-        if (tr == NULL)
-        {
-            cout << "The tree is empty. Unable to delete the maximum value." << endl;
-            return tr;
-        }
-
         
         //We check to see if the current node's data is less than the key to be deleted
         //if it is, then the current node is not the one to be deleted.
         //Then we lie on the right subtrees of the root
         
-        if( key > tr->data )  
+        if(key > tr->data)  
             tr->RightChild = deleteNode(tr->RightChild, key);  
         
         //else, we know that this is the node to be deleted  
@@ -440,6 +426,7 @@ class BinaryTreeNode
         
         if (balance > 1 && Ndbalance(tr->LeftChild) >= 0) 
         { 
+        	cout<<"LL"<<endl;
             tr = Rightrotation(tr);
             Findmaxkey(tr);
             return tr;  
@@ -454,6 +441,7 @@ class BinaryTreeNode
         
         if (balance > 1 && Ndbalance(tr->LeftChild) < 0 && tr->LeftChild->data < tr->LeftChild->RightChild->data)  
         {  
+        	cout<<"LR I "<<endl;
             tr->LeftChild = LeftRotationI(tr->LeftChild);  
             tr = Rightrotation(tr);
             Findmaxkey(tr);
@@ -469,6 +457,7 @@ class BinaryTreeNode
         
         if (balance > 1 && Ndbalance(tr->LeftChild) < 0 && tr->LeftChild->data > tr->LeftChild->RightChild->data)  
         {  
+        	cout<<"LR II "<<endl;
             tr->LeftChild = LeftRotationII(tr->LeftChild);  
             tr = Rightrotation(tr);
             Findmaxkey(tr);
@@ -483,6 +472,7 @@ class BinaryTreeNode
         
         if (balance < -1 && Ndbalance(tr->RightChild) <= 0 && tr->RightChild->data > tr->data)  
         {
+        	cout<<"RR I "<<endl;
             tr = LeftRotationI(tr);
             Findmaxkey(tr);
             return tr;
@@ -492,10 +482,11 @@ class BinaryTreeNode
         
         //This is not the classic AVL RR case. Balance < -1 means that the problem has been made from the right. RightChild's balance <= 0 means that
         //he have to make a RR rotation.In this case: tr->RightChild->data < tr->data. So we cant perform the classic left
-        //rotation of because the tree is going to be illegal. So the main concept of RRII is to bring tr->RightChild node as tr->LeftChild.
+        //rotation because the tree is going to be illegal. So the main concept of RRII is to bring tr->RightChild node as tr->LeftChild.
         
         if (balance < -1 && Ndbalance(tr->RightChild) <= 0 && tr->RightChild->data < tr->data)  
         {
+        	cout<<"RR II "<<endl;
             tr = LeftRotationII(tr);
             Findmaxkey(tr);
             return tr;
@@ -509,6 +500,7 @@ class BinaryTreeNode
         
         if (balance < -1 && Ndbalance(tr->RightChild) > 0 && tr->data < tr->RightChild->LeftChild->data)
         {  
+        	cout<<"RL I "<<endl;
             tr->RightChild = Rightrotation(tr->RightChild);  
             tr = LeftRotationI(tr);
             Findmaxkey(tr);
@@ -523,6 +515,7 @@ class BinaryTreeNode
         
         if (balance < -1 && Ndbalance(tr->RightChild) > 0 && tr->data > tr->RightChild->LeftChild->data)
         {  
+        	cout<<"RL II "<<endl;
             tr->RightChild = Rightrotation(tr->RightChild);  
             tr = LeftRotationII(tr);
             Findmaxkey(tr);
@@ -561,7 +554,7 @@ class BinaryTreeNode
         bool b = Searchsamekey(tr,k); //Checking for duplicate value
         if(b) //if k already in tree return root (tr is root)
         {
-        	cout<<"Given element already exists";
+        	cout<<"Given element already exists"<<endl;
             return tr;
 		}
         
@@ -693,6 +686,7 @@ class BinaryTreeNode
         
         if (a_balance < -1  && Preorder_Search(a->RightChild->LeftChild, k) && a->data < a->RightChild->LeftChild->data)   
         {  
+        	cout<<"RL I "<<endl;
             Rightrotation(a->RightChild,a->RightChild,0,0);
             LeftrotationI(a,tr,pal,par);
             
@@ -704,6 +698,7 @@ class BinaryTreeNode
         
         else if (a_balance < -1 && Preorder_Search(a->RightChild->LeftChild, k) && a->data > a->RightChild->LeftChild->data)      
         {
+        	cout<<"RL II"<<endl;
 		    Rightrotation(a->RightChild,a->RightChild,0,0);
             LeftrotationII(a,pal,par);
             
@@ -715,7 +710,7 @@ class BinaryTreeNode
         
          else if (a_balance < -1 && a->data < a->RightChild->data)
          {
-		 
+		 	cout<<"RR I"<<endl;
             LeftrotationI(a,tr,pal,par);
 
             Findmaxkey(tr);
@@ -725,7 +720,8 @@ class BinaryTreeNode
         // Right Right Case II
         
         else if (a_balance < -1 && a->data > a->RightChild->data)
-        {
+        {	
+        	cout<<"RR II"<<endl;
         	LeftrotationII(a,pal,par); 
         	
         	Findmaxkey(tr);
@@ -736,6 +732,7 @@ class BinaryTreeNode
         
         else if (a_balance > 1 && Preorder_Search(a->LeftChild->RightChild, k) && a->LeftChild->data < a->LeftChild->RightChild->data)  
         {  
+        	cout<<"LR I"<<endl;
             LeftrotationI(a->LeftChild,a->LeftChild,0,0);  
             Rightrotation(a,tr,pal,par); 
             
@@ -747,6 +744,7 @@ class BinaryTreeNode
         
         else if (a_balance > 1 && Preorder_Search(a->LeftChild->RightChild, k) && a->LeftChild->data > a->LeftChild->RightChild->data)  
         {  
+        	cout<<"LR II"<<endl;
             LeftrotationII(a->LeftChild,0,0);
             Rightrotation(a,tr,pal,par);  
             
@@ -758,6 +756,7 @@ class BinaryTreeNode
 
         else if (a_balance > 1 && k < a->LeftChild->data)   
         {
+        	cout<<"LL"<<endl;
             Rightrotation(a,tr,pal,par);
             
             Findmaxkey(tr);
@@ -777,7 +776,6 @@ class BinaryTreeNode
     private:
         int data; //Node data
         BinaryTreeNode *Maxkey, *LeftChild, *RightChild; //pointer to max element, left subtree and right subtree
-
 };
 
 
@@ -831,7 +829,7 @@ int main()
         switch (action)
         {
             case 1:
-                cout << "Enter the number you want to insert: ";
+                cout << "Enter the number (only integer numbers) you want to insert: ";
                 cin >> number;
 
                 tree = BinaryTreeNode::Insert(tree, number);
@@ -840,15 +838,23 @@ int main()
                 break;
 
             case 2:
-                cout << "The maximum value of the tree is: " << BinaryTreeNode::Returnmaxkey(tree) << endl;
+            	if(tree)
+                	cout << "The maximum value of the tree is: " << BinaryTreeNode::Returnmaxkey(tree) << endl;
+                else
+                	cout<< "The tree is null.Unable to find maximum value" << endl;
                 system("pause");
                 cout << endl;
                 break;
 
             case 3:
-                maximum = BinaryTreeNode::Returnmaxkey(tree);
-                cout << "Deleting node with value: " << maximum << endl;
-                tree    = BinaryTreeNode::deleteNode(tree, maximum);
+            	if (tree)
+            	{
+                	maximum = BinaryTreeNode::Returnmaxkey(tree);
+                	cout << "Deleting node with value: " << maximum << endl;
+                	tree    = BinaryTreeNode::deleteNode(tree, maximum);
+                }
+                else 
+                	cout << "The tree is null.Unable to delete the maximum value" << endl;
                 system("pause");
                 cout << endl;
                 break;
