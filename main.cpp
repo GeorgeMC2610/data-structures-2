@@ -70,7 +70,7 @@ class BinaryTreeNode
         //Find max key element of tree
         if (tr)
         {
-            //we create a dummy tree same as the starting one, and we set the maximum value as the root
+            //we create a dummy node-pointer same as the starting one (root), and we set the maximum value as the root value
             BinaryTreeNode *p = tr;
             int maxkey = p -> data;
             tr -> Maxkey = p;
@@ -81,7 +81,7 @@ class BinaryTreeNode
             //and while p is not null
             while(p)
             {
-                //we chech to see if there's any value bigger than the starting one
+                //we check to see if there's any value bigger than the previous one
                 if (p -> data > maxkey)
                 {
                     //and if there is, we update the maximum element
@@ -108,7 +108,7 @@ class BinaryTreeNode
         int hltr = Subtreeheight(str->LeftChild);  // height of left subtree
         int hrtr = Subtreeheight(str->RightChild); // height of right subtree
 
-        if (hltr > hrtr)
+        if (hltr > hrtr) //we return the max height of left and right subtree plus 1 (because we have to add the root's hight also)
         {
             return ++hltr;   
         } 
@@ -146,13 +146,13 @@ class BinaryTreeNode
                 return true; 
             }
 
-            //if the key is less than the current node, then we lie on the right subtree
+            //if the key is greater than the current node, then we lie on the right subtree
             else if (k > tr->data)
             {
                 return Searchsamekey(tr->RightChild, k);
             }
 
-            //else, it means that the key could be anywhere else, so we search for it using preorder search
+            //else, it means that the key could be anywhere else, so we search for it in the whole subtree using preorder search
             else if(Preorder_Search(tr,k))
             {
             	return true; 
