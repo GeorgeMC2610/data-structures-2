@@ -346,12 +346,11 @@ class BinaryTreeNode
 
     static BinaryTreeNode* deleteNode(BinaryTreeNode* tr, int key)  
     
-    //We are searching the key k with the help of tr pointer. k is the maxkey of tree
+    //We are searching the key 'k' with the help of 'tr' pointer. 'k' is the maxkey of tree
     {   
-        
         //We check to see if the current node's data is less than the key to be deleted
         //if it is, then the current node is not the one to be deleted.
-        //Then we lie on the right subtrees of the root
+        //Then we lie on the right subtrees of the root, by calling the function itself but this time with the right subtree.
         
         if(key > tr->data)  
             tr->RightChild = deleteNode(tr->RightChild, key);  
